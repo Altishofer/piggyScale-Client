@@ -1,5 +1,5 @@
 import {Component, OnInit, ChangeDetectorRef, ViewChild} from '@angular/core';
-import {MqttService} from "../data/services/mqtt.service";
+import {MqttService} from "../../../../data/services/mqtt.service";
 import {NgFor} from "@angular/common";
 import {Chart, ChartConfiguration, ChartData, ChartOptions, registerables} from 'chart.js';
 Chart.register(...registerables);
