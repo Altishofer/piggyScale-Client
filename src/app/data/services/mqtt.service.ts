@@ -1,10 +1,12 @@
 // mqtt.service.ts
 import { Injectable } from '@angular/core';
-import { connect, IClientOptions, IClientSubscribeOptions, MqttClient} from 'mqtt';
+import mqtt, {IClientOptions, IClientSubscribeOptions, MqttClient} from "mqtt";
+import {Buffer} from "buffer";
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class MqttService {
   public client!: MqttClient;
 
@@ -23,14 +25,14 @@ export class MqttService {
       connectTimeout: 30 * 1000,
       will: {
         topic: 'WillMsg',
-        payload: new Buffer("hello"),
+        payload: Buffer.from("hello"),
         qos: 0,
         retain: false
       },
       rejectUnauthorized: false
     };
 
-    this.client = connect('ws://10.215.39.1:9001', options);
+    this.client = mqtt.connect('ws://10.215.39.1:9001', options);
 
     this.client.on('connect', () => {
       console.log('Connected to MQTT Broker');
@@ -42,7 +44,7 @@ export class MqttService {
     });
 
     this.client.on('message', (topic: any, message: { toString: () => any; }) => {
-      console.log(`Received message: ${message.toString()} from topic: ${topic}`);
+      //console.log(`Received message: ${message.toString()} from topic: ${topic}`);
     });
   }
 

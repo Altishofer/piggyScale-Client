@@ -2,6 +2,12 @@
 <div>
   <h1>{{ title }}</h1>
   <ul>
+    <canvas baseChart
+            [data]="lineChartData"
+            [options]="lineChartOptions"
+            [type]="'line'">
+    </canvas>
+
     <li *ngFor="let message of messages">{{ message }}</li>
   </ul>
 </div>
