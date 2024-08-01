@@ -1,13 +1,12 @@
 <!-- app.component.html -->
-<div>
+<div style="align-items: center">
   <h1>{{ title }}</h1>
-  <ul>
-    <canvas baseChart
-            [data]="lineChartData"
-            [options]="lineChartOptions"
-            [type]="'line'">
-    </canvas>
-
-    <li *ngFor="let message of messages">{{ message }}</li>
-  </ul>
+  <h2>Average: {{this.lastestAverage()}} kg</h2>
+  <h2>Real time: {{this.lastestRaw()}} kg</h2>
+  <h2>StdDev: {{this.stdDev}} kg</h2>
+  <canvas baseChart
+          [data]="lineChartData"
+          [options]="lineChartOptions"
+          [type]="'line'">
+  </canvas>
 </div>
