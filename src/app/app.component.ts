@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 
-export class AppModul implements OnInit{
+export class AppComponent implements OnInit{
 
   constructor() {}
 
