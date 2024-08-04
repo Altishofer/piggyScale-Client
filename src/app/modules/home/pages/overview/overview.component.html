@@ -1,0 +1,20 @@
+<!-- app.component.html -->
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <h1>{{ title }}</h1>
+  </header>
+  <div *ngFor="let chart of charts" class="chart-container">
+    <div class="chart-title">{{ chart.data.datasets[0].label }}</div>
+    <canvas baseChart
+            [datasets]="chart.data.datasets"
+            [labels]="chart.data.labels"
+            [options]="chart.options"
+            [legend]="chart.legend"
+            [type]="'line'">
+    </canvas>
+  </div>
+  <button class="custom-button" (click)="onGetOverview()">Update Charts</button>
+  <div *ngIf="confirmationMessage">
+    <p>{{ confirmationMessage }}</p>
+  </div>
+</div>

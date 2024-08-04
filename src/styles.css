@@ -8,11 +8,41 @@ body {
   padding: 0;
 }
 
+h1 {
+  margin: 1.5vh;
+}
+
+h2 {
+  margin: 1.5vh;
+  align-content: center;
+}
+
 .dashboard-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 20px;
+  justify-content: center;
+  padding: 20px; /* Add padding to prevent overlap */
+  width: 100%; /* Ensure it takes full width */
+  box-sizing: border-box; /* Include padding in the element's total width and height */
+  margin: 20px 0; /* Add margin to separate it from surrounding elements */
+}
+
+.chart-container {
+  margin-bottom: 20px; /* Add margin to separate charts */
+  padding: 10px; /* Add padding around each chart */
+  border: 1px solid #ddd; /* Optional: Add a border for better visual separation */
+  border-radius: 8px; /* Optional: Add rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
+  width:80vh;
+
+}
+
+.chart-title {
+  margin-bottom: 10px; /* Add margin below the title */
+  font-size: 1.2em; /* Increase font size for the title */
+  font-weight: bold; /* Make the title bold */
+  text-align: center; /* Center the title */
 }
 
 .dashboard-header {
@@ -21,9 +51,10 @@ body {
 
 .dashboard-metrics {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   width: 100%;
   margin-bottom: 20px;
+  gap: 2vh;
 }
 
 .metric {
@@ -49,3 +80,64 @@ p {
   font-size: 1.2em;
   font-weight: bold;
 }
+
+
+.navbar {
+  background: linear-gradient(90deg, #4CAF50, #2E7D32);
+  padding: 10px 0;
+  display: flex;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  height: 5vh;
+}
+
+.nav-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 20px;
+}
+
+.nav-item {
+  padding: 10px 20px;
+}
+
+.nav-item a {
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  font-size: 1.1em;
+  font-weight: 500;
+  transition: background-color 0.3s, color 0.3s, font-size 0.3s;
+}
+
+.nav-item a:hover {
+  color: black;
+}
+
+.nav-item a.active {
+  color: black;
+  border-radius: 4px;
+  font-size: 1.2em; /* Increase font size for active item */
+}
+
+
+.custom-button {
+  background-color: #2E7D32; /* Professional blue background */
+  color: white; /* White text */
+  font-size: 16px; /* Increase font size */
+  padding: 10px 20px; /* Add padding */
+  border-radius: 5px; /* Rounded corners */
+  width: 100%; /* Full width */
+  border: none; /* Remove border */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease; /* Smooth transition */
+  max-width: 50vw;
+}
+
+.custom-button:hover {
+  background-color: #333333; /* Darker blue on hover */
+}
+

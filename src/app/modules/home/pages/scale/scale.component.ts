@@ -27,6 +27,7 @@ export class ScaleComponent {
   public confirmationMessage: string | null = null;
   private estimation_lst: number[] = []
   private estimate: boolean = false;
+  public confirmationMessage2: string | null = null;
 
   @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
 
@@ -54,6 +55,8 @@ export class ScaleComponent {
       label.push(this.counter);
       rawData.push(value);
 
+      console.log(this.estimation_lst);
+      console.log(this.estimate);
       if (this.estimate){
         this.estimation_lst.push(value);
       }
@@ -159,7 +162,7 @@ export class ScaleComponent {
         display: true,
         title: {
           display: true,
-          text: 'Weight'
+          text: 'Weight (kg)'
         },
         beginAtZero: true,
         max: 110,
@@ -234,6 +237,10 @@ export class ScaleComponent {
     });
   }
 
+  private delay(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
   public async computeStatisticsWithoutOutliers(): Promise< {
     mean: number,
     median: number,
@@ -242,7 +249,7 @@ export class ScaleComponent {
     this.estimation_lst = [];
     this.estimate = true;
 
-    delay(1000);
+    await delay(4000);
 
     this.estimate = false;
 
@@ -263,7 +270,7 @@ export class ScaleComponent {
     const upperBound = q3 + 1.5 * iqr;
 
     // Filter out outliers
-    const filteredValues: Number[] = this.estimation_lst.filter(value => value >= lowerBound && value <= upperBound);
+    const filteredValues: number[] = this.estimation_lst.filter(value => value >= lowerBound && value <= upperBound);
 
     if (filteredValues.length === 0) {
       throw new Error("All values are considered outliers. Adjust the criteria or check the data.");
@@ -290,6 +297,8 @@ export class ScaleComponent {
     } else {
       median = filteredValues[middle];
     }
+
+    this.confirmationMessage2 = `Mean ${mean}, median ${median}, confidentalInverval  [${confidenceInterval[0]}, ${confidenceInterval[1]}]`;
 
     return {
       mean: mean,

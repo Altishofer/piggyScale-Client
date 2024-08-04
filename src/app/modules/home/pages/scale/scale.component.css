@@ -1,20 +1,3 @@
 /* scale.component.css */
 
 
-
-.custom-button {
-  background-color: #007BFF; /* Professional blue background */
-  color: white; /* White text */
-  font-size: 16px; /* Increase font size */
-  padding: 10px 20px; /* Add padding */
-  border-radius: 5px; /* Rounded corners */
-  width: 100%; /* Full width */
-  border: none; /* Remove border */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s ease; /* Smooth transition */
-  max-width: 50vw;
-}
-
-.custom-button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
-}

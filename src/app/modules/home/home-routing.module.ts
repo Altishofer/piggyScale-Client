@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {ScaleComponent} from "./pages/scale/scale.component";
+import {OverviewComponent} from "@modules/home/pages/overview/overview.component";
 
 const routes: Routes = [
   {
@@ -11,6 +12,10 @@ const routes: Routes = [
   {
     path:'scale',
     component: ScaleComponent
+  },
+  {
+    path:'overview',
+    component: OverviewComponent
   }
 
 ];
