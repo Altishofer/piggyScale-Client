@@ -5,13 +5,15 @@
   </header>
   <div *ngFor="let chart of charts" class="chart-container">
     <div class="chart-title">{{ chart.data.datasets[0].label }}</div>
-    <canvas baseChart
-            [datasets]="chart.data.datasets"
-            [labels]="chart.data.labels"
-            [options]="chart.options"
-            [legend]="chart.legend"
-            [type]="'line'">
-    </canvas>
+    <div>
+      <canvas baseChart class="canvas"
+              [datasets]="chart.data.datasets"
+              [labels]="chart.data.labels"
+              [options]="chart.options"
+              [legend]="chart.legend"
+              [type]="'line'">
+      </canvas>
+    </div>
   </div>
   <button class="custom-button" (click)="onGetOverview()">Update Charts</button>
   <div *ngIf="confirmationMessage">

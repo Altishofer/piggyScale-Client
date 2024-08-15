@@ -1,15 +1,11 @@
-<!-- app.component.html -->
 <div class="dashboard-container">
   <header class="dashboard-header">
     <h1>{{ title }}</h1>
   </header>
+
   <div class="dashboard-metrics">
     <div class="metric">
       <h2>Real Time</h2>
-      <p>{{ lastestRaw() }} kg</p>
-    </div>
-    <div class="metric">
-      <h2>Average</h2>
       <p>{{ lastestAverage() }} kg</p>
     </div>
     <div class="metric" [ngStyle]="{'color': getStdDevColor()}">
@@ -17,20 +13,30 @@
       <p>{{ stdDev }} kg</p>
     </div>
   </div>
+
   <div class="dashboard-chart">
-    <canvas baseChart
+    <canvas baseChart class="canvas"
             [data]="lineChartData"
             [options]="lineChartOptions"
             [type]="'line'">
     </canvas>
   </div>
-  <button class="custom-button" (click)="onPostFinal()">Store Weight In DB</button>
-  <div *ngIf="confirmationMessage">
-    <p>{{ confirmationMessage }}</p>
+
+  <div *ngIf="feedbackMessage" class="confirmation-message">
+    <p>{{ feedbackMessage }}</p>
   </div>
 
-  <button class="custom-button" (click)="computeStatisticsWithoutOutliers()">Estimate correct weight</button>
-  <div *ngIf="confirmationMessage2">
-    <p>{{ confirmationMessage2 }}</p>
+  <div class="weight-estimate-container">
+    <h2>Real-Time Estimate</h2>
+    <p *ngIf="realTimeEstimate">Weight: {{ realTimeEstimate }} kg  | StdDev: {{lowestStdDev}} kg</p>
+    <div class="dashboard-actions">
+      <button class="custom-button" (click)="resetEstimate()" [disabled]="realTimeEstimate == null">Reset</button>
+      <button class="custom-button" (click)="onPostFinal()" [disabled]="realTimeEstimate == null">Submit</button>
+      <button class="custom-button" (click)="onDeleteLastFinal()">Delete Last</button>
+    </div>
   </div>
+
+  <footer class="footer">
+    <p>&copy; 2024 Your Company</p>
+  </footer>
 </div>

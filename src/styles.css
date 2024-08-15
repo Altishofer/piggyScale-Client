@@ -1,48 +1,75 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
-
 body {
   font-family: 'Roboto', sans-serif;
-  background-color: #f0f2f5;
-  color: #333;
+  background-color: #e8f5e9; /* Light green background */
+  color: #1b5e20; /* Dark green for text */
   margin: 0;
   padding: 0;
 }
 
-h1 {
+h1, h2 {
   margin: 1.5vh;
-}
-
-h2 {
-  margin: 1.5vh;
+  color: #004303; /* Medium green for headings */
   align-content: center;
 }
+
+.dashboard-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
 
 .dashboard-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px; /* Add padding to prevent overlap */
-  width: 100%; /* Ensure it takes full width */
-  box-sizing: border-box; /* Include padding in the element's total width and height */
-  margin: 20px 0; /* Add margin to separate it from surrounding elements */
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 20px 0;
+  background-color: #ffffff; /* White background for the container */
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-header {
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, #66bb6a, #43a047); /* Gradient green header */
+
+  border-radius: 10px;
+  color: white;
+  text-align: center;
+  width: 100%;
 }
 
 .chart-container {
-  margin-bottom: 20px; /* Add margin to separate charts */
-  padding: 10px; /* Add padding around each chart */
-  border: 1px solid #ddd; /* Optional: Add a border for better visual separation */
-  border-radius: 8px; /* Optional: Add rounded corners */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
-  width:80vh;
-
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%; /* Full width of the container */
+  max-width: 80vw; /* Maximum width relative to the viewport width */
 }
 
 .chart-title {
-  margin-bottom: 10px; /* Add margin below the title */
-  font-size: 1.2em; /* Increase font size for the title */
-  font-weight: bold; /* Make the title bold */
-  text-align: center; /* Center the title */
+  margin-bottom: 10px;
+  font-size: 1.2em;
+  font-weight: bold;
+  text-align: center;
+}
+
+.weight-estimate-container {
+  margin-top: 20px;
+  background-color: #a5d6a7; /* Medium green background for the estimate section */
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  width: 100%;
+  max-width: 90vw;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .dashboard-header {
@@ -51,24 +78,35 @@ h2 {
 
 .dashboard-metrics {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   width: 100%;
   margin-bottom: 20px;
-  gap: 2vh;
+  gap: 20px;
 }
 
 .metric {
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  padding: 10px;
+  background-color: #c8e6c9; /* Light green background for metrics */
+  border-radius: 12px;
+  padding: 20px;
   text-align: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex: 1; /* Make metrics equal width */
+  min-width: 150px;
+}
+
+@media (max-width: 600px) {
+  .metric {
+    padding: 10px; /* Reduce padding for smaller screens */
+  }
 }
 
 .dashboard-chart {
   width: 100%;
-  max-width: 800px;
-  height: 40vh;
+  height: 100%;
+  background-color: #f1f8e9; /* Very light green background for the chart */
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
@@ -81,14 +119,14 @@ p {
   font-weight: bold;
 }
 
-
 .navbar {
-  background: linear-gradient(90deg, #4CAF50, #2E7D32);
-  padding: 10px 0;
+  background: linear-gradient(90deg, #66bb6a, #43a047); /* Gradient green background */
   display: flex;
   justify-content: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  height: 5vh;
+  height: auto; /* Adjust height based on content */
+  border-radius: 8px; /* Rounded corners for a softer look */
+  margin-bottom: 20px; /* Space below the navbar */
 }
 
 .nav-list {
@@ -111,33 +149,68 @@ p {
   font-size: 1.1em;
   font-weight: 500;
   transition: background-color 0.3s, color 0.3s, font-size 0.3s;
+  border-radius: 5px;
+  padding: 8px 16px; /* Added padding for better touch targets */
 }
 
 .nav-item a:hover {
-  color: black;
+  color: #ffffff; /* Maintain white color on hover */
+  background-color: #388e3c; /* Darker green background on hover */
 }
 
 .nav-item a.active {
-  color: black;
-  border-radius: 4px;
-  font-size: 1.2em; /* Increase font size for active item */
+  color: #ffffff; /* White text for active link */
+  background-color: #2e7d32; /* Darker green background for active link */
+  font-size: 1.2em; /* Slightly larger font size for active link */
 }
 
 
 .custom-button {
-  background-color: #2E7D32; /* Professional blue background */
-  color: white; /* White text */
-  font-size: 16px; /* Increase font size */
-  padding: 10px 20px; /* Add padding */
-  border-radius: 5px; /* Rounded corners */
-  width: 100%; /* Full width */
-  border: none; /* Remove border */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s ease; /* Smooth transition */
-  max-width: 50vw;
+  background-color: #2e7d32; /* Dark green for buttons */
+  color: white;
+  font-size: 16px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.custom-button:hover {
-  background-color: #333333; /* Darker blue on hover */
+.custom-button:disabled {
+  background-color: darkslategrey; /* Dark green for buttons */
+  color: white;
+  cursor: not-allowed; /* Change cursor to indicate disabled state */
+  pointer-events: none; /* Disable all pointer events */
 }
 
+.custom-button:not(:disabled):hover {
+  background-color: #1b5e20; /* Even darker green on hover */
+}
+
+.canvas {
+  min-height: 30vh;
+  max-height: 60vh;
+}
+
+.footer {
+  background-color: #388e3c; /* Medium green footer */
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  font-size: small;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  border-top: 2px solid #2e7d32;
+}
+
+.confirmation-message {
+  background-color: #c8e6c9; /* Light green background for confirmation messages */
+  color: #1b5e20; /* Dark green text */
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 10px;
+  width: 100%;
+  max-width: 90vw;
+  text-align: center;
+}

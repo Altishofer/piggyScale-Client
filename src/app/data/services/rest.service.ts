@@ -18,6 +18,14 @@ export class RestService {
     );
   }
 
+  deleteLastFinal(): Observable<any> {
+    return this.http.post<any>(
+      this.apiUrl + "/deleteLast",
+      {},
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+
   getOverview(): Observable<any> {
     return this.http.get<any>(
       this.apiUrl + "/overview",

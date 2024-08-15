@@ -2,7 +2,8 @@ import {Component, OnInit, ChangeDetectorRef, ViewChild} from '@angular/core';
 import {MqttService} from "../../../../data/services/mqtt.service";
 import {NgFor, NgStyle} from "@angular/common";
 import {Chart, ChartConfiguration, ChartData, ChartOptions, registerables} from 'chart.js';
-Chart.register(...registerables);
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+Chart.register(...registerables, ChartDataLabels);
 
 import {BaseChartDirective} from "ng2-charts";
 import {delay, min} from "rxjs";
@@ -20,14 +21,16 @@ import {CommonModule} from "@angular/common";
 })
 export class ScaleComponent {
 
-  messages: string[] = [];
   title: string = "PiggyScale";
   counter: number = 0;
   stdDev: string = "0";
-  public confirmationMessage: string | null = null;
+  public feedbackMessage: string | null = null;
   private estimation_lst: number[] = []
   private estimate: boolean = false;
   public confirmationMessage2: string | null = null;
+
+  public lowestStdDev: number | null = null;
+  public realTimeEstimate: string | null = null;
 
   @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
 
@@ -38,63 +41,51 @@ export class ScaleComponent {
   }
 
   addDataToChart(time: Date, value: number) {
-    const rawData : (number | null)[] = this.lineChartData.datasets[0].data as (number | null)[];
-    const averageData : (number | null)[] = this.lineChartData.datasets[1].data as (number | null)[];
-    const label: (number | null)[] = this.lineChartData.labels as (number | null)[];
+    var chartValid : boolean = true;
+    const rawData: (number | null)[] = this.lineChartData.datasets[0].data as (number | null)[];
+    const averageData: (number | null)[] = this.lineChartData.datasets[1].data as (number | null)[];
+    const labels: (number | null)[] = this.lineChartData.labels as (number | null)[];
 
-    let width: number = 50;
-    [rawData, averageData, label].forEach(function(lst: (number | null)[])
-    {
+    const width: number = 50;
+    [rawData, averageData, labels].forEach(lst => {
       while (lst.length < width) {
-        lst.push(null)
+        lst.push(null);
       }
-    })
+    });
 
-    if (label && rawData && averageData) {
+    if (labels && rawData && averageData) {
       this.cd.detectChanges();
-      label.push(this.counter);
+      labels.push(this.counter);
       rawData.push(value);
 
-      console.log(this.estimation_lst);
-      console.log(this.estimate);
-      if (this.estimate){
+      if (this.estimate) {
         this.estimation_lst.push(value);
       }
 
-      let len : number = 10;
-      let total : number = 0;
-      let notNull: number = 0;
-      while (len > 0) {
-        const nextV: number | null = rawData[rawData.length - len];
-        if (nextV !== null && !isNaN(nextV)) {
-          total += nextV;
-          notNull++;
-        }
-        len--;
-      }
-      const avg : number = total /  notNull;
-      if (total && notNull){
+      const recentValues = rawData.slice(-10).filter(v => v !== null && !isNaN(v)) as number[];
+      const notNull = recentValues.length;
+
+      if (notNull > 0) {
+        const avg: number = recentValues.reduce((sum, val) => sum + val, 0) / notNull;
         averageData.push(avg);
-      }
 
-      len = 10;
-      total = 0;
+        const variance : number = recentValues.reduce((sum, val) => sum + Math.pow(val - avg, 2), 0) / notNull;
+        const stddev: number = Math.sqrt(variance);
 
-      if (avg && notNull){
-        while (len > 0) {
-          const nextV: number | null = rawData[rawData.length - len];
-          if (nextV !== null && !isNaN(nextV)) {
-            total += Math.pow(nextV - avg, 2);
+        // @ts-ignore
+        if (this.realTimeEstimate == null || this.lowestStdDev > stddev) {
+          if (rawData.slice(-10).every(value => value !== null)){
+            this.realTimeEstimate = avg.toString();
+            this.lowestStdDev = Number(stddev.toFixed(2));
+          } else {
+            this.resetEstimate();
           }
-          len--;
         }
-        if (total){
-          this.stdDev= Math.pow(total /  notNull, 0.5).toFixed(2);
-        }
+        this.stdDev = stddev.toFixed(2);
       }
 
-      if (rawData.length > width) {
-        label.shift();
+      while (rawData.length > width) {
+        labels.shift();
         rawData.shift();
         averageData.shift();
       }
@@ -106,12 +97,19 @@ export class ScaleComponent {
     }
   }
 
+
   public lastestAverage() : string {
     let latestV : number | null = this.lineChartData.datasets[1].data[this.lineChartData.datasets[1].data.length-1] as number | null;
     if (isNumber(latestV)){
       return latestV.toFixed(2);
     }
     return "0";
+  }
+
+  public resetEstimate(){
+    this.realTimeEstimate = null;
+    this.lowestStdDev = null;
+    this.feedbackMessage = null;
   }
 
   public lastestRaw() : string {
@@ -126,15 +124,28 @@ export class ScaleComponent {
     datasets: [
       {
         data: [],
-        label: 'Measurements',
-        borderColor: '#3e95cd',
+        label: 'Real Time',
+        borderColor: 'rgba(151,175,152,0.44)',
+        backgroundColor: 'rgba(151,175,152,0.44)',
         fill: false,
       },
       {
         data: [],
-        label: 'Average',
-        borderColor: '#333333',
-        fill: false,
+        label: '10 - Average',
+        borderColor: '#1b5e20',
+        fill: true,
+        datalabels: {
+          color: "#fffff",
+          display: function(context) {
+            return window.innerWidth > 600;
+          },
+          align: "top",
+          formatter: Math.round,
+          padding: 10,
+          font: {
+            weight: "bold"
+          }
+        }
       }
     ],
     labels: []
@@ -186,17 +197,28 @@ export class ScaleComponent {
         display: true,
         position: 'top',
         labels: {
-          color: 'rgb(0, 0, 0)'
-        }
+          color: 'rgb(0, 0, 0)',
+          font: {
+            weight: 'bold',
+            size: 16
+          },
+        },
+
       },
       tooltip: {
         enabled: true,
         mode: 'nearest',
         callbacks: {
           label: function(tooltipItem) {
-            return `${tooltipItem.raw} kg`;
+            return `${tooltipItem.formattedValue} kg`;
+          },
+          title: function() {
+            return ''; // This ensures the title (label) is empty
           }
         }
+      },
+      datalabels: {
+        display: false // Disable datalabels globally
       }
     }
   };
@@ -221,14 +243,35 @@ export class ScaleComponent {
   }
 
   public onPostFinal(): void {
-    const weight = this.lastestAverage()
+    const weight = this.realTimeEstimate;
+    if (weight == null){
+      return;
+    }
     this.restService.postFinal(weight).subscribe({
       next: (value) : void => {
-        this.confirmationMessage = `Weight ${weight} kg stored successfully.`;
+        this.resetEstimate();
+        this.feedbackMessage = `Weight ${weight} kg stored successfully.`;
         console.log("REST reported weight:", weight);
       },
       error: (error) : void => {
-        this.confirmationMessage = `Error storing weight: ${error.message}`;
+        this.feedbackMessage = `Error storing weight: ${error.message}`;
+        console.log("ERROR: posting weight failed", error);
+      },
+      complete: () : void => {
+        console.log("Post request completed");
+      }
+    });
+  }
+
+  public onDeleteLastFinal(): void {
+    this.restService.deleteLastFinal().subscribe({
+      next: (value) : void => {
+        this.resetEstimate();
+        this.feedbackMessage = `Weight ${weight} kg stored successfully.`;
+        console.log("REST reported weight:", weight);
+      },
+      error: (error) : void => {
+        this.feedbackMessage = `Error storing weight: ${error.message}`;
         console.log("ERROR: posting weight failed", error);
       },
       complete: () : void => {

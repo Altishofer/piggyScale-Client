@@ -85,7 +85,7 @@ export class OverviewComponent {
             ]
           },
           options: {
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
           responsive: true,
           animation: {
           duration: 0, // Disable all animations
@@ -139,7 +139,7 @@ export class OverviewComponent {
               mode: 'nearest',
               callbacks: {
               label: function(tooltipItem: { raw: any; }) {
-                return `${tooltipItem.raw} kg`;
+                return `${tooltipItem.raw.toFixed(2)} kg`;
               }
             }
           }
