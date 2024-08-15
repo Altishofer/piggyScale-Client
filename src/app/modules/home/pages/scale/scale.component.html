@@ -8,7 +8,7 @@
       <h2>Real Time</h2>
       <p>{{ lastestAverage() }} kg</p>
     </div>
-    <div class="metric" [ngStyle]="{'color': getStdDevColor()}">
+    <div class="metric" [ngStyle]="{'color': getStdDevColor(this.stdDev)}">
       <h2>StdDev</h2>
       <p>{{ stdDev }} kg</p>
     </div>
@@ -24,19 +24,30 @@
 
   <div *ngIf="feedbackMessage" class="confirmation-message">
     <p>{{ feedbackMessage }}</p>
+    <button class="custom-button-red" [disabled]="!showDeleteLast" (click)="handleRevertClick()" style="margin: 10px">Revert</button>
+    <button class="custom-button" (click)="resetFeedback()" style="margin: 10px">OK</button>
   </div>
 
   <div class="weight-estimate-container">
     <h2>Real-Time Estimate</h2>
-    <p *ngIf="realTimeEstimate">Weight: {{ realTimeEstimate }} kg  | StdDev: {{lowestStdDev}} kg</p>
+    <p *ngIf="realTimeEstimate && !isProcessing">
+      Weight: {{ realTimeEstimate }} kg |
+      <span [ngStyle]="{'color': getStdDevColor(lowestStdDev?.toString())}">StdDev: {{ lowestStdDev }} kg</span>
+    </p>
+
+
     <div class="dashboard-actions">
-      <button class="custom-button" (click)="resetEstimate()" [disabled]="realTimeEstimate == null">Reset</button>
-      <button class="custom-button" (click)="onPostFinal()" [disabled]="realTimeEstimate == null">Submit</button>
-      <button class="custom-button" (click)="onDeleteLastFinal()">Delete Last</button>
+      <div *ngIf="isProcessing || realTimeEstimate == null; else buttons">
+        <div class="loading-spinner">
+          <div class="leaf"></div>
+        </div>
+      </div>
+
+      <ng-template #buttons>
+        <button class="custom-button" (click)="handleResetClick()">Reset</button>
+        <button class="custom-button" (click)="handleSubmitClick()">Submit</button>
+      </ng-template>
     </div>
   </div>
 
-  <footer class="footer">
-    <p>&copy; 2024 Your Company</p>
-  </footer>
 </div>

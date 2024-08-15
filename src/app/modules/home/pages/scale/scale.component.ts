@@ -12,6 +12,12 @@ import {RestService} from "@data/services/rest.service";
 import {MatButton} from "@angular/material/button";
 import {CommonModule} from "@angular/common";
 
+
+interface DeleteResponse {
+  weight: number;
+  stddev: number;
+}
+
 @Component({
   selector: 'app-scale',
   standalone: true,
@@ -32,6 +38,9 @@ export class ScaleComponent {
   public lowestStdDev: number | null = null;
   public realTimeEstimate: string | null = null;
 
+  public showDeleteLast: boolean = false;
+  public isProcessing: boolean = false;
+
   @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
 
   constructor(private mqttService: MqttService, private cd: ChangeDetectorRef, private restService: RestService) {
@@ -46,7 +55,7 @@ export class ScaleComponent {
     const averageData: (number | null)[] = this.lineChartData.datasets[1].data as (number | null)[];
     const labels: (number | null)[] = this.lineChartData.labels as (number | null)[];
 
-    const width: number = 50;
+    const width: number = 30;
     [rawData, averageData, labels].forEach(lst => {
       while (lst.length < width) {
         lst.push(null);
@@ -106,10 +115,15 @@ export class ScaleComponent {
     return "0";
   }
 
-  public resetEstimate(){
+  public resetEstimate() : void{
     this.realTimeEstimate = null;
     this.lowestStdDev = null;
     this.feedbackMessage = null;
+  }
+
+  public resetFeedback() : void{
+    this.resetEstimate();
+    this.isProcessing = false;
   }
 
   public lastestRaw() : string {
@@ -227,34 +241,40 @@ export class ScaleComponent {
     this.mqttService.subscribe('measurements/realtime');
   }
 
-  public getStdDevColor(): string {
-    const stdDevValue = parseFloat(this.stdDev);
-    const maxStdDev : number = 10; // Define the maximum stdDev value for red color
+  public getStdDevColor(stddev: string | undefined): string {
+
+    if (!stddev){
+      return `rgb(${46}, ${125}, 50)`
+    }
+    const stdDevValue = parseFloat(stddev);
+    const maxStdDev : number = 3; // Define the maximum stdDev value for red color
     const minStdDev: number = 0;  // Define the minimum stdDev value for green color
 
     // Clamp the stdDevValue between minStdDev and maxStdDev
     const clampedStdDev : number = Math.max(minStdDev, Math.min(maxStdDev, stdDevValue));
 
     // Calculate the proportion of red and green
-    const red : number = Math.min(255, Math.floor((clampedStdDev / maxStdDev) * 255));
+    const red : number = Math.min(95, Math.floor((clampedStdDev / maxStdDev) * 255));
     const green : number = Math.min(150, Math.floor(((maxStdDev - clampedStdDev) / maxStdDev) * 255));
 
-    return `rgb(${red}, ${green}, 0)`;
+    return `rgb(${red}, ${green}, 31)`;
   }
 
   public onPostFinal(): void {
     const weight = this.realTimeEstimate;
-    if (weight == null){
+    const stddev = this.lowestStdDev?.toString();
+    if (weight == null || stddev == null){
       return;
     }
-    this.restService.postFinal(weight).subscribe({
+    this.restService.postFinal(weight, stddev).subscribe({
       next: (value) : void => {
-        this.resetEstimate();
-        this.feedbackMessage = `Weight ${weight} kg stored successfully.`;
+        this.resetEstimate(); // Weight: {{ realTimeEstimate }} kg | StdDev: {{lowestStdDev}} kg
+        this.feedbackMessage = `Weight ${weight} kg | StdDev: ${stddev} kg >> stored successfully.`;
+        this.showDeleteLast = true;
         console.log("REST reported weight:", weight);
       },
       error: (error) : void => {
-        this.feedbackMessage = `Error storing weight: ${error.message}`;
+        this.feedbackMessage = `Error: ${error.message}`;
         console.log("ERROR: posting weight failed", error);
       },
       complete: () : void => {
@@ -265,10 +285,10 @@ export class ScaleComponent {
 
   public onDeleteLastFinal(): void {
     this.restService.deleteLastFinal().subscribe({
-      next: (value) : void => {
-        this.resetEstimate();
-        this.feedbackMessage = `Weight ${weight} kg stored successfully.`;
-        console.log("REST reported weight:", weight);
+      next: (value: DeleteResponse) : void => {
+        this.showDeleteLast = false;
+        this.feedbackMessage = `Weight ${value.weight} kg | StdDev: ${value.stddev} kg >> DELETED successfully.`;
+        console.log("REST deleted weight:", value.weight);
       },
       error: (error) : void => {
         this.feedbackMessage = `Error storing weight: ${error.message}`;
@@ -280,81 +300,27 @@ export class ScaleComponent {
     });
   }
 
-  private delay(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+  handleAction(action: () => void, isProcessingKey: 'isProcessing') {
+    if (this.realTimeEstimate != null) {
+      this[isProcessingKey] = true;
+      action();
+      setTimeout(() => {
+        this[isProcessingKey] = false;
+      }, 2000); // Adjust the delay based on your process duration
+    }
   }
 
-  public async computeStatisticsWithoutOutliers(): Promise< {
-    mean: number,
-    median: number,
-    confidenceInterval: [number, number]}> {
-
-    this.estimation_lst = [];
-    this.estimate = true;
-
-    await delay(4000);
-
-    this.estimate = false;
-
-    if (this.estimation_lst.length === 0) {
-      throw new Error("The list of values cannot be empty.");
-    }
-
-    // Sort the values
-    this.estimation_lst.sort((a, b) => a - b);
-
-    // Calculate Q1 and Q3
-    const q1 = this.estimation_lst[Math.floor((this.estimation_lst.length / 4))];
-    const q3 = this.estimation_lst[Math.floor((this.estimation_lst.length * (3 / 4)))];
-    const iqr = q3 - q1;
-
-    // Calculate lower and upper bounds
-    const lowerBound = q1 - 1.5 * iqr;
-    const upperBound = q3 + 1.5 * iqr;
-
-    // Filter out outliers
-    const filteredValues: number[] = this.estimation_lst.filter(value => value >= lowerBound && value <= upperBound);
-
-    if (filteredValues.length === 0) {
-      throw new Error("All values are considered outliers. Adjust the criteria or check the data.");
-    }
-
-    // Calculate the mean of the filtered values
-    const mean: number = filteredValues.reduce((sum, value) => sum + value, 0) / filteredValues.length;
-
-    // Calculate the standard deviation of the filtered values
-    const stdDev = Math.sqrt(filteredValues.reduce((sum, value) => sum + Math.pow(value - mean, 2), 0) / (filteredValues.length - 1));
-
-    // Calculate the standard error
-    const standardError = stdDev / Math.sqrt(filteredValues.length);
-
-    // 95% confidence interval
-    const marginOfError = 1.96 * standardError;
-    const confidenceInterval: [number, number] = [mean - marginOfError, mean + marginOfError];
-
-    // Calculate the median of the filtered values
-    const middle = Math.floor(filteredValues.length / 2);
-    let median: number;
-    if (filteredValues.length % 2 === 0) {
-      median = (filteredValues[middle - 1] + filteredValues[middle]) / 2;
-    } else {
-      median = filteredValues[middle];
-    }
-
-    this.confirmationMessage2 = `Mean ${mean}, median ${median}, confidentalInverval  [${confidenceInterval[0]}, ${confidenceInterval[1]}]`;
-
-    return {
-      mean: mean,
-      median: median,
-      confidenceInterval: confidenceInterval
-    };
+  handleResetClick() {
+    this.handleAction(() => this.resetEstimate(), 'isProcessing');
   }
 
+  handleRevertClick() {
+    this.onDeleteLastFinal();
+  }
 
-  // const stats = computeStatisticsWithoutOutliers(values);
-  // console.log(`Mean: ${stats.mean}`);
-  // console.log(`Median: ${stats.median}`);
-  // console.log(`95% Confidence Interval: [${stats.confidenceInterval[0]}, ${stats.confidenceInterval[1]}]`);
-
+  handleSubmitClick() {
+    this.onPostFinal();
+    this.isProcessing = true;
+  }
 
 }

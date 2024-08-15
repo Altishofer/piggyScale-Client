@@ -10,10 +10,10 @@ export class RestService {
 
   constructor(private http: HttpClient) {}
 
-  postFinal(weight: string): Observable<any> {
+  postFinal(weight: string, stddev: string): Observable<any> {
     return this.http.post<any>(
       this.apiUrl + "/final",
-      { measure: weight, box: 1 },
+      { weight: weight, box: 1 , stddev: stddev},
       { headers: { 'Content-Type': 'application/json' } }
     );
   }
