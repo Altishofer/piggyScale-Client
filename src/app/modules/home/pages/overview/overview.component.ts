@@ -101,7 +101,7 @@ export class OverviewComponent {
             ticks: {
               maxRotation: 20,
               minRotation: 20
-            },
+            }
           },
           y: {
             display: true,

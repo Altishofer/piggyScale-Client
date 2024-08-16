@@ -84,7 +84,7 @@ export class ScaleComponent {
         // @ts-ignore
         if (this.realTimeEstimate == null || this.lowestStdDev > stddev) {
           if (rawData.slice(-10).every(value => value !== null)){
-            this.realTimeEstimate = avg.toString();
+            this.realTimeEstimate = avg.toFixed(2);
             this.lowestStdDev = Number(stddev.toFixed(2));
           } else {
             this.resetEstimate();
@@ -247,7 +247,7 @@ export class ScaleComponent {
       return `rgb(${46}, ${125}, 50)`
     }
     const stdDevValue = parseFloat(stddev);
-    const maxStdDev : number = 3; // Define the maximum stdDev value for red color
+    const maxStdDev : number = 5; // Define the maximum stdDev value for red color
     const minStdDev: number = 0;  // Define the minimum stdDev value for green color
 
     // Clamp the stdDevValue between minStdDev and maxStdDev

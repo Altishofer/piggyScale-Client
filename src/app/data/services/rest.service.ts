@@ -29,7 +29,14 @@ export class RestService {
   getOverview(): Observable<any> {
     return this.http.get<any>(
       this.apiUrl + "/overview",
-      { headers: { 'Content-Type': 'application/json' } }
-    );
-  }
+      { headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    getBox(box: string): Observable<any> {
+      return this.http.get<any>(
+        this.apiUrl + "/box/" + box,
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+    }
 }
