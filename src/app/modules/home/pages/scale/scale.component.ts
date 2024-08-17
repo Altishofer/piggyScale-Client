@@ -139,17 +139,18 @@ export class ScaleComponent {
       {
         data: [],
         label: 'Real Time',
-        borderColor: 'rgba(151,175,152,0.44)',
-        backgroundColor: 'rgba(151,175,152,0.44)',
+        borderColor: '#94897980',
+        backgroundColor: '#94897900',
         fill: false,
       },
       {
         data: [],
         label: '10 - Average',
-        borderColor: '#1b5e20',
+        borderColor: '#3C5B6F',
+        backgroundColor: "#3C5B6F4D",
         fill: true,
         datalabels: {
-          color: "#fffff",
+          color: "#3C5B6F",
           display: function(context) {
             return window.innerWidth > 600;
           },
@@ -220,16 +221,7 @@ export class ScaleComponent {
 
       },
       tooltip: {
-        enabled: true,
-        mode: 'nearest',
-        callbacks: {
-          label: function(tooltipItem) {
-            return `${tooltipItem.formattedValue} kg`;
-          },
-          title: function() {
-            return ''; // This ensures the title (label) is empty
-          }
-        }
+        enabled: false
       },
       datalabels: {
         display: false // Disable datalabels globally
@@ -269,7 +261,7 @@ export class ScaleComponent {
     this.restService.postFinal(weight, stddev).subscribe({
       next: (value) : void => {
         this.resetEstimate(); // Weight: {{ realTimeEstimate }} kg | StdDev: {{lowestStdDev}} kg
-        this.feedbackMessage = `Weight ${weight} kg | StdDev: ${stddev} kg >> stored successfully.`;
+        this.feedbackMessage = `Weight ${weight} kg | StdDev: ${stddev} kg`;
         this.showDeleteLast = true;
         console.log("REST reported weight:", weight);
       },
@@ -287,7 +279,7 @@ export class ScaleComponent {
     this.restService.deleteLastFinal().subscribe({
       next: (value: DeleteResponse) : void => {
         this.showDeleteLast = false;
-        this.feedbackMessage = `Weight ${value.weight} kg | StdDev: ${value.stddev} kg >> DELETED successfully.`;
+        this.feedbackMessage = `Weight ${value.weight} kg | StdDev: ${value.stddev} kg`;
         console.log("REST deleted weight:", value.weight);
       },
       error: (error) : void => {

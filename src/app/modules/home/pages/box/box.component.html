@@ -1,21 +1,24 @@
 <div class="dashboard-container">
+
   <header class="dashboard-header">
-    <h1>{{ title }}</h1>
+    <h1>{{ title }} {{current_box}}</h1>
+    <header class="dashboard-header">
+      <div class="horizontal-menu">
+        <button (click)="onChartChange('1')" class="menu-item">Box 1</button>
+        <button (click)="onChartChange('2')" class="menu-item">Box 2</button>
+        <button (click)="onChartChange('3')" class="menu-item">Box 3</button>
+      </div>
+    </header>
+
   </header>
 
-  <div class="dashboard-metrics">
-    <div class="metric">
-      <h2>Real Time</h2>
-      <p>3 kg</p>
-    </div>
-    <div class="metric">
-      <h2>StdDev</h2>
-      <p>3 kg</p>
-    </div>
-  </div>
 
-  <div class="dashboard-chart">
-    <canvas baseChart class="canvas"
+  <div class="divider"></div> <!-- Divider between sections -->
+
+  <div class="dashboard-chart" *ngIf="box_data.length > 0">
+    <h2>Average Weight</h2>
+
+    <canvas baseChart class="canvas" style="display: unset!important;"
             [datasets]="chart.data.datasets"
             [labels]="chart.data.labels"
             [options]="chart.options"
@@ -24,15 +27,20 @@
     </canvas>
   </div>
 
-  <div class="dashboard-chart">
-    <canvas baseChart class="canvas"
-            [datasets]="boxPlotChart.data.datasets"
-            [labels]="boxPlotChart.data.labels"
-            [options]="boxPlotChart.options"
-            [legend]="boxPlotChart.legend"
-            [type]="'boxplot'">
-    </canvas>
+  <div class="divider"></div> <!-- Divider between sections -->
+
+
+
+  <div class="dashboard-chart" *ngIf="barChart != null">
+    <h2>Weight Distribution</h2>
+      <canvas baseChart class="canvas" style="display: unset!important;"
+              [datasets]="barChart.datasets"
+              [labels]="barChart.labels"
+              [options]="barChart.options"
+              [type]="'bar'">
+      </canvas>
   </div>
 
-
 </div>
+
+

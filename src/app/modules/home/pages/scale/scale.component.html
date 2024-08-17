@@ -14,27 +14,37 @@
     </div>
   </div>
 
+  <div class="divider"></div> <!-- Divider between sections -->
+
   <div class="dashboard-chart">
-    <canvas baseChart class="canvas"
+    <canvas baseChart class="canvas" style="display: block;"
             [data]="lineChartData"
             [options]="lineChartOptions"
             [type]="'line'">
     </canvas>
   </div>
+  <div class="divider"></div> <!-- Divider between sections -->
 
-  <div *ngIf="feedbackMessage" class="confirmation-message">
+
+  <div *ngIf="feedbackMessage && showDeleteLast" class="weight-estimate-container">
+    <h2>Estimate Stored</h2>
     <p>{{ feedbackMessage }}</p>
-    <button class="custom-button-red" [disabled]="!showDeleteLast" (click)="handleRevertClick()" style="margin: 10px">Revert</button>
+    <button class="custom-button-red" [hidden]="!showDeleteLast" (click)="handleRevertClick()" style="margin: 10px">Revert</button>
     <button class="custom-button" (click)="resetFeedback()" style="margin: 10px">OK</button>
   </div>
 
-  <div class="weight-estimate-container">
+  <div *ngIf="feedbackMessage && !showDeleteLast" class="weight-estimate-container">
+    <h2>Estimate Deleted</h2>
+    <p>{{ feedbackMessage }}</p>
+    <button class="custom-button" (click)="resetFeedback()" style="margin: 10px">OK</button>
+  </div>
+
+  <div *ngIf="!feedbackMessage" class="weight-estimate-container">
     <h2>Real-Time Estimate</h2>
     <p *ngIf="realTimeEstimate && !isProcessing">
       Weight: {{ realTimeEstimate }} kg |
       <span [ngStyle]="{'color': getStdDevColor(lowestStdDev?.toString())}">StdDev: {{ lowestStdDev }} kg</span>
     </p>
-
 
     <div class="dashboard-actions">
       <div *ngIf="isProcessing || realTimeEstimate == null; else buttons">
@@ -49,5 +59,4 @@
       </ng-template>
     </div>
   </div>
-
 </div>
