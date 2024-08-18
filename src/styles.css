@@ -9,12 +9,16 @@
   --divider-color: #000000; /* Light divider grey */
 }
 
+
+
+
 body {
-  font-family: 'Roboto', sans-serif;
   background-color: var(--background-color);
   color: var(--contrast-color);
   margin: 0;
   padding: 0;
+  box-sizing: border-box; /* Ensures padding and borders are included in width/height */
+  overflow-x: hidden; /* Prevents horizontal scrolling */
 }
 
 h1, h2 {
@@ -31,9 +35,11 @@ h1, h2 {
 }
 
 .dashboard-container {
-  max-width: 1200px;
-  margin: 80px auto 20px auto; /* Adjusted margin for top space with fixed navbar */
+  max-width: 100%; /* Ensures container doesn't exceed screen width */
+  width: 100%; /* Ensure it uses the full available width */
+  margin: 80px auto 20px auto; /* Center container and adjust margins */
   padding: 0 20px;
+  box-sizing: border-box; /* Ensures padding and borders are included in width/height */
 }
 
 .dashboard-header {
@@ -49,15 +55,17 @@ h1, h2 {
   color: var(--secondary-color);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 1000;
-  padding: 10px 20px;
+  padding: 10px 0 10px 0;
   display: flex;
-  justify-content: center; /* Center the navbar */
+  justify-content: center;
   align-items: center;
+  box-sizing: border-box;
 }
 
 .navbar h1 {
   font-size: 1.5em;
   font-weight: 500;
+  margin: 0; /* Ensure no margin affects centering */
 }
 
 .nav-list {
@@ -79,6 +87,7 @@ h1, h2 {
 .nav-item a:hover {
   color: var(--accent-color);
 }
+
 
 .divider {
   width: 100%;
@@ -136,10 +145,11 @@ p {
   border: none;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  position: relative;
 }
 
 .custom-button {
-  background-color: var(--primary-color);
+  background-color: var(--contrast-color);
   color: var(--secondary-color);
 }
 
@@ -148,9 +158,30 @@ p {
   color: var(--secondary-color);
 }
 
+.custom-button:not(:disabled):active,
+.custom-button-red:not(:disabled):active {
+  background-color: var(--danger-color);
+  color: var(--secondary-color);
+}
+
+.custom-button:not(:disabled):focus,
+.custom-button-red:not(:disabled):focus {
+  background-color: var(--danger-color);
+  color: var(--secondary-color);
+}
+
 .custom-button:not(:disabled):hover,
 .custom-button-red:not(:disabled):hover {
-  opacity: 0.8;
+  background-color: var(--danger-color);
+  color: var(--secondary-color);
+}
+
+.custom-button:disabled,
+.custom-button-red:disabled {
+  background-color: #ccc; /* Disabled background color */
+  color: #999; /* Disabled text color */
+  cursor: not-allowed; /* Change cursor to indicate disabled state */
+  opacity: 0.6; /* Reduce opacity for disabled state */
 }
 
 .weight-estimate-container {
@@ -202,24 +233,43 @@ p {
   margin-top: 20px;
 }
 
-.menu-item {
-  background-color: var(--muted-color);
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px 20px;
+
+.custom-button mat-progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+}
+
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 20px 0;
+  box-sizing: border-box;
+}
+
+.input-container input[type="text"] {
+  width: 100%; /* Full width of the container */
+  padding: 10px;
   font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s, box-shadow 0.3s;
-  color: black; /* Ensure text color is black */
-  text-decoration: none; /* Remove any text decoration */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
+  text-align:center;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.menu-item:hover {
-  background-color: var(--accent-color);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.menu-item:focus {
+.input-container input[type="text"]:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   outline: none;
-  background-color: var(--accent-color);
 }
+
+

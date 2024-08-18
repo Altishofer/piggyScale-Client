@@ -11,6 +11,7 @@ import {each, isNumber} from "chart.js/helpers";
 import {RestService} from "@data/services/rest.service";
 import {MatButton} from "@angular/material/button";
 import {CommonModule} from "@angular/common";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
 
 
 interface DeleteResponse {
@@ -21,7 +22,7 @@ interface DeleteResponse {
 @Component({
   selector: 'app-scale',
   standalone: true,
-  imports: [NgFor, BaseChartDirective, NgStyle, MatButton, CommonModule],
+  imports: [NgFor, BaseChartDirective, NgStyle, MatButton, CommonModule, MatProgressBarModule],
   templateUrl: './scale.component.html',
   styleUrl: './scale.component.css'
 })

@@ -1,22 +1,22 @@
 <div class="dashboard-container">
 
   <header class="dashboard-header">
-    <h1>{{ title }} {{current_box}}</h1>
+    <h3>{{ title }} {{currentBox}}</h3>
     <header class="dashboard-header">
       <div class="horizontal-menu">
-        <button (click)="onChartChange('1')" class="menu-item">Box 1</button>
-        <button (click)="onChartChange('2')" class="menu-item">Box 2</button>
-        <button (click)="onChartChange('3')" class="menu-item">Box 3</button>
+        <button (click)="onChartChange('1')" [class.active]="currentBox === '1'" class="custom-button">Box 1</button>
+        <button (click)="onChartChange('2')" [class.active]="currentBox === '2'" class="custom-button">Box 2</button>
+        <button (click)="onChartChange('3')" [class.active]="currentBox === '3'" class="custom-button">Box 3</button>
       </div>
     </header>
-
   </header>
+
 
 
   <div class="divider"></div>
 
   <div class="dashboard-chart" *ngIf="box_data.length > 0">
-    <h2>Average Weight</h2>
+    <h5 style="text-align: center">Average Weight</h5>
 
     <canvas baseChart class="canvas" style="display: unset!important;"
             [datasets]="chart.data.datasets"

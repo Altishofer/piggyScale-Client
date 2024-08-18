@@ -28,7 +28,7 @@ interface BoxResponse {
 export class BoxComponent {
 
   title = "Box";
-  current_box: string = "1";
+  currentBox: string = "1";
   box_data: BoxResponse[] = [];
   confirmationMessage: string | null = null;
   chart: any = null;
@@ -36,7 +36,7 @@ export class BoxComponent {
   barChart: any = null;
 
   constructor(private cd: ChangeDetectorRef, private restService: RestService) {
-    this.onGetBox(this.current_box);
+    this.onGetBox(this.currentBox);
   }
 
   public onGetBox(box: string): void {
@@ -70,8 +70,8 @@ export class BoxComponent {
   }
 
   onChartChange(box: string) {
-    this.current_box = box;
-    this.onGetBox(this.current_box);
+    this.currentBox = box;
+    this.onGetBox(this.currentBox);
   }
 
   createCharts(): void {
@@ -109,7 +109,7 @@ export class BoxComponent {
     });
 
     this.chart = {
-      id: this.current_box.toString(),
+      id: this.currentBox.toString(),
       data: {
         labels: chartLabels, // Use "DD.MM.YYYY" format for the labels
         datasets: [
