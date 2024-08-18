@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import {ScaleComponent} from "./pages/scale/scale.component";
 import {OverviewComponent} from "@modules/home/pages/overview/overview.component";
 import {BoxComponent} from "@modules/home/pages/box/box.component";
+import {InputComponent} from "@modules/home/pages/input/input.component";
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path:'box',
     component: BoxComponent
+  },
+  {
+    path:'input',
+    component: InputComponent
   }
 ];
 

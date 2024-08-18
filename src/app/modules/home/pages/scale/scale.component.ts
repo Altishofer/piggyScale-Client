@@ -106,7 +106,6 @@ export class ScaleComponent {
     }
   }
 
-
   public lastestAverage() : string {
     let latestV : number | null = this.lineChartData.datasets[1].data[this.lineChartData.datasets[1].data.length-1] as number | null;
     if (isNumber(latestV)){
@@ -124,14 +123,6 @@ export class ScaleComponent {
   public resetFeedback() : void{
     this.resetEstimate();
     this.isProcessing = false;
-  }
-
-  public lastestRaw() : string {
-    let latestV : number | null = this.lineChartData.datasets[0].data[this.lineChartData.datasets[0].data.length-1] as number | null;
-    if (isNumber(latestV)){
-      return latestV.toFixed(2);
-    }
-    return "0";
   }
 
   public lineChartData: ChartConfiguration['data'] = {

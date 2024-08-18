@@ -79,16 +79,30 @@ export class BoxComponent {
 
     // Group weights by date
     this.box_data.forEach((item: BoxResponse) => {
-      const date = item.DATE_TIME.split('-')[0]; // Extract date part
-      if (!dailyWeights[date]) {
-        dailyWeights[date] = [];
+      const dateTime = item.DATE_TIME.split('-')[0]; // Extract date part "DD.MM.YYYY"
+      const [day, month, year] = dateTime.split('.'); // Split by '.' to get day, month, year
+
+      // Convert to "YYYY-MM-DD" format for correct sorting
+      const formattedDate = `${year}-${month}-${day}`;
+
+      if (!dailyWeights[formattedDate]) {
+        dailyWeights[formattedDate] = [];
       }
-      dailyWeights[date].push(item.WEIGHT);
+      dailyWeights[formattedDate].push(item.WEIGHT);
     });
 
-    // Calculate average weight for each date
-    const chartLabels = Object.keys(dailyWeights).sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
-    const chartData = chartLabels.map(date => {
+    // Sort the dates in "YYYY-MM-DD" format
+    const sortedDates = Object.keys(dailyWeights).sort((a, b) => {
+      return new Date(a).getTime() - new Date(b).getTime();
+    });
+
+    // Convert back to "DD.MM.YYYY" format after sorting
+    const chartLabels = sortedDates.map(date => {
+      const [year, month, day] = date.split('-');
+      return `${day}.${month}.${year}`;
+    });
+
+    const chartData = sortedDates.map(date => {
       const weights = dailyWeights[date];
       const totalWeight = weights.reduce((acc, weight) => acc + weight, 0);
       return totalWeight / weights.length;
@@ -97,7 +111,7 @@ export class BoxComponent {
     this.chart = {
       id: this.current_box.toString(),
       data: {
-        labels: chartLabels,
+        labels: chartLabels, // Use "DD.MM.YYYY" format for the labels
         datasets: [
           {
             data: chartData,
@@ -121,15 +135,15 @@ export class BoxComponent {
       },
       options: {
         maintainAspectRatio: false,
-          responsive: true,
-          animation: {
-            duration: 0, // Disable all animations
-            easing: 'linear'
+        responsive: true,
+        animation: {
+          duration: 0, // Disable all animations
+          easing: 'linear'
         },
         scales: {
           x: {
             display: true,
-              title: {
+            title: {
               display: false
             },
             ticks: {
@@ -141,13 +155,13 @@ export class BoxComponent {
           },
           y: {
             display: true,
-              title: {
+            title: {
               display: true,
-                text: 'Weight (kg)',
-                color: '#3C5B6F',
-                font: {
-                  size: 14
-                }
+              text: 'Weight (kg)',
+              color: '#3C5B6F',
+              font: {
+                size: 14
+              }
             },
             beginAtZero: true,
             max: 110,
@@ -164,8 +178,8 @@ export class BoxComponent {
           },
           point: {
             radius: 3, // Point radius
-              hitRadius: 5,
-              hoverRadius: 5
+            hitRadius: 5,
+            hoverRadius: 5
           }
         },
         plugins: {
@@ -180,8 +194,11 @@ export class BoxComponent {
           }
         }
       }
-    }
+    };
   }
+
+
+
 
   createBarChart(): void {
     const weightCategories = Array.from({length: 12}, (_, i) => i * 10);
