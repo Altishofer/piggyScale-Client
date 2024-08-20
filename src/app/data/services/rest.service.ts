@@ -33,9 +33,9 @@ export class RestService {
       });
     }
 
-    getBox(box: string): Observable<any> {
+    getBox(box: string, timeLine: string): Observable<any> {
       return this.http.get<any>(
-        this.apiUrl + "/box/" + box,
+        this.apiUrl + "/box/" + box + "/" + timeLine,
         { headers: { 'Content-Type': 'application/json' } }
       );
     }

@@ -91,7 +91,7 @@ h1, h2 {
 
 .divider {
   width: 100%;
-  height: 2px;
+  height: 0.1em;
   background-color: var(--primary-color);
   margin: 10px 0 10px 0;
 }
@@ -225,15 +225,6 @@ p {
 
 
 
-
-.horizontal-menu {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-
 .custom-button mat-progress-bar {
   position: absolute;
   top: 0;
@@ -271,5 +262,37 @@ p {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   outline: none;
 }
+
+
+
+
+
+
+
+
+
+.mat-button-toggle-group {
+  display: flex;
+  justify-content: center;
+  border-radius: 10px !important;
+  margin: 10px;
+}
+
+.mat-button-toggle {
+  color: var(--primary-color);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.mat-button-toggle:hover {
+  background-color: var(--contrast-color);
+  color: var(--secondary-color);
+}
+
+.mat-button-toggle-checked {
+  background-color: var(--contrast-color) !important;
+  color: var(--secondary-color) !important;
+}
+
+
 
 

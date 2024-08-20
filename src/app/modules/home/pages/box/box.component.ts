@@ -5,6 +5,9 @@ import {RestService} from "@data/services/rest.service";
 import {Chart} from "chart.js";
 import {Context} from "chartjs-plugin-datalabels";
 import 'chartjs-chart-box-and-violin-plot';
+import {MatButtonToggle, MatButtonToggleGroup} from "@angular/material/button-toggle";
+import {FormsModule} from "@angular/forms";
+import {MatDivider} from "@angular/material/divider";
 
 interface BoxResponse {
   BOX: string;
@@ -19,7 +22,11 @@ interface BoxResponse {
   standalone: true,
   imports: [
     BaseChartDirective,
-    NgIf
+    NgIf,
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    FormsModule,
+    MatDivider
   ],
   templateUrl: './box.component.html',
   styleUrl: './box.component.css'
@@ -34,13 +41,14 @@ export class BoxComponent {
   chart: any = null;
   boxPlotChart: any = null;
   barChart: any = null;
+  public timeLine: string = "7";
 
   constructor(private cd: ChangeDetectorRef, private restService: RestService) {
     this.onGetBox(this.currentBox);
   }
 
   public onGetBox(box: string): void {
-    this.restService.getBox(box).subscribe({
+    this.restService.getBox(box, this.timeLine).subscribe({
       next: (response): void => {
         if (Array.isArray(response)) {
           this.box_data = response as BoxResponse[];
@@ -69,9 +77,12 @@ export class BoxComponent {
     });
   }
 
-  onChartChange(box: string) {
-    this.currentBox = box;
+  onChartChange() {
     this.onGetBox(this.currentBox);
+  }
+
+  display(): boolean {
+    return window.innerWidth > 600 && this.timeLine != "0";
   }
 
   createCharts(): void {
@@ -79,8 +90,8 @@ export class BoxComponent {
 
     // Group weights by date
     this.box_data.forEach((item: BoxResponse) => {
-      const dateTime = item.DATE_TIME.split('-')[0]; // Extract date part "DD.MM.YYYY"
-      const [day, month, year] = dateTime.split('.'); // Split by '.' to get day, month, year
+      const dateTime = item.DATE_TIME.split(' ')[0]; // Extract date part "DD.MM.YYYY"
+      const [ year, month, day] = dateTime.split('.'); // Split by '.' to get day, month, year
 
       // Convert to "YYYY-MM-DD" format for correct sorting
       const formattedDate = `${year}-${month}-${day}`;
@@ -120,9 +131,7 @@ export class BoxComponent {
             fill: true,
             datalabels: {
               color: "#3C5B6F",
-              display: function(context: any) {
-                return window.innerWidth > 600;
-              },
+              display: this.display.bind(this),
               align: "top",
               formatter: Math.round,
               padding: 10,
@@ -164,7 +173,7 @@ export class BoxComponent {
               }
             },
             beginAtZero: true,
-            max: 110,
+            max: 120,
             ticks: {
               autoSkip: false,
               color: '#3C5B6F',

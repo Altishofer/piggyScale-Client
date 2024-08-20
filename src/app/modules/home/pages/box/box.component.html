@@ -3,17 +3,32 @@
   <header class="dashboard-header">
     <h3>{{ title }} {{currentBox}}</h3>
     <header class="dashboard-header">
-      <div class="horizontal-menu">
-        <button (click)="onChartChange('1')" [class.active]="currentBox === '1'" class="custom-button">Box 1</button>
-        <button (click)="onChartChange('2')" [class.active]="currentBox === '2'" class="custom-button">Box 2</button>
-        <button (click)="onChartChange('3')" [class.active]="currentBox === '3'" class="custom-button">Box 3</button>
-      </div>
+      <mat-button-toggle-group
+        [(ngModel)]="currentBox"
+        (change)="onChartChange()"
+        aria-label="BoxSelection"
+        [hideSingleSelectionIndicator]="true"
+      >
+        <mat-button-toggle value="1">Box 1</mat-button-toggle>
+        <mat-button-toggle value="2">Box 2</mat-button-toggle>
+        <mat-button-toggle value="3">Box 3</mat-button-toggle>
+      </mat-button-toggle-group>
+
+      <mat-button-toggle-group
+        [(ngModel)]="timeLine"
+        (change)="onChartChange()"
+        aria-label="timeLine"
+        [hideSingleSelectionIndicator]="true"
+      >
+        <mat-button-toggle value="7">Week</mat-button-toggle>
+        <mat-button-toggle value="30">Month</mat-button-toggle>
+        <mat-button-toggle value="0">All</mat-button-toggle>
+      </mat-button-toggle-group>
     </header>
   </header>
 
 
-
-  <div class="divider"></div>
+  <mat-divider class="divider"></mat-divider>
 
   <div class="dashboard-chart" *ngIf="box_data.length > 0">
     <h5 style="text-align: center">Average Weight</h5>

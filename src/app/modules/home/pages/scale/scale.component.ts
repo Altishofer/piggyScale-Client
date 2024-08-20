@@ -12,6 +12,7 @@ import {RestService} from "@data/services/rest.service";
 import {MatButton} from "@angular/material/button";
 import {CommonModule} from "@angular/common";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {MatDivider} from "@angular/material/divider";
 
 
 interface DeleteResponse {
@@ -22,7 +23,7 @@ interface DeleteResponse {
 @Component({
   selector: 'app-scale',
   standalone: true,
-  imports: [NgFor, BaseChartDirective, NgStyle, MatButton, CommonModule, MatProgressBarModule],
+  imports: [NgFor, BaseChartDirective, NgStyle, MatButton, CommonModule, MatProgressBarModule, MatDivider],
   templateUrl: './scale.component.html',
   styleUrl: './scale.component.css'
 })
