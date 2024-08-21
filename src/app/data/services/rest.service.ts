@@ -39,4 +39,11 @@ export class RestService {
         { headers: { 'Content-Type': 'application/json' } }
       );
     }
+
+  getAll(): Observable<any> {
+    return this.http.get<any>(
+      this.apiUrl + "/export",
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+  }
 }
