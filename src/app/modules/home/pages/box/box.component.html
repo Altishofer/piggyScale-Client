@@ -27,10 +27,14 @@
     </header>
   </header>
 
+  <div class="dashboard-header" *ngIf="errorMessage">
+    <p>{{errorMessage}}</p>
+  </div>
+
 
   <mat-divider class="divider"></mat-divider>
 
-  <div class="dashboard-chart" *ngIf="box_data.length > 0">
+  <div class="dashboard-chart" *ngIf="box_data.length > 0 && !errorMessage">
     <h5 style="text-align: center">Average Weight</h5>
 
     <canvas baseChart class="canvas" style="display: unset!important;"

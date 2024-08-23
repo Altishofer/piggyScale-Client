@@ -35,7 +35,7 @@ export class ScaleComponent {
   public feedbackMessage: string | null = null;
   private estimation_lst: number[] = []
   private estimate: boolean = false;
-  public confirmationMessage2: string | null = null;
+  public errorMessage: string | null = null;
 
   public lowestStdDev: number | null = null;
   public realTimeEstimate: string | null = null;
@@ -125,6 +125,7 @@ export class ScaleComponent {
   public resetFeedback() : void{
     this.resetEstimate();
     this.isProcessing = false;
+    this.errorMessage = null;
   }
 
   public lineChartData: ChartConfiguration['data'] = {
@@ -259,7 +260,7 @@ export class ScaleComponent {
         console.log("REST reported weight:", weight);
       },
       error: (error) : void => {
-        this.feedbackMessage = `Error: ${error.message}`;
+        this.errorMessage = `Server Offline, please contact admin.`;
         console.log("ERROR: posting weight failed", error);
       },
       complete: () : void => {

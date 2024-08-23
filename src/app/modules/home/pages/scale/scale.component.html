@@ -26,20 +26,26 @@
 
   <mat-divider class="divider"></mat-divider>
 
-  <div *ngIf="feedbackMessage && showDeleteLast" class="weight-estimate-container">
+  <div *ngIf="feedbackMessage && showDeleteLast && !errorMessage" class="weight-estimate-container">
     <h5>Estimate Stored</h5>
     <p>{{ feedbackMessage }}</p>
     <button class="custom-button-red" [hidden]="!showDeleteLast" (click)="handleRevertClick()" style="margin: 10px">Revert</button>
     <button class="custom-button" (click)="resetFeedback()" style="margin: 10px">OK</button>
   </div>
 
-  <div *ngIf="feedbackMessage && !showDeleteLast" class="weight-estimate-container">
+  <div *ngIf="feedbackMessage && !showDeleteLast && !errorMessage" class="weight-estimate-container">
     <h5>Estimate Deleted</h5>
     <p>{{ feedbackMessage }}</p>
     <button class="custom-button" (click)="resetFeedback()" style="margin: 10px">OK</button>
   </div>
 
-  <div *ngIf="!feedbackMessage" class="weight-estimate-container">
+  <div *ngIf="errorMessage" class="weight-estimate-container">
+    <h5>ERROR</h5>
+    <p>{{ errorMessage }}</p>
+    <button class="custom-button" (click)="resetFeedback()" style="margin: 10px">OK</button>
+  </div>
+
+  <div *ngIf="!feedbackMessage && !errorMessage" class="weight-estimate-container">
     <h5>Real-Time Estimate</h5>
     <p *ngIf="realTimeEstimate && !isProcessing">
       Weight: {{ realTimeEstimate }} kg |

@@ -1,28 +1,28 @@
 import {ChangeDetectorRef, Component} from '@angular/core';
 import {RestService} from "@data/services/rest.service";
-
-interface BoxResponse {
-  BOX: string;
-  DATE_TIME: string;
-  ID: number;
-  STDDEV: number;
-  WEIGHT: number;
-}
+import {FormsModule} from "@angular/forms";
+import {NgIf} from "@angular/common";
+import * as XLSX from 'xlsx';
+import { FileSaverService } from 'ngx-filesaver';
+import {BoxResponse} from "@data/models/boxResponse.interface"
 
 @Component({
   selector: 'app-export',
   standalone: true,
-  imports: [],
+  imports: [
+    FormsModule,
+    NgIf
+  ],
   templateUrl: './export.component.html',
   styleUrl: './export.component.css'
 })
 export class ExportComponent {
 
-  confirmationMessage: string | null = null;
   box_data: BoxResponse[] = [];
+  title: string = "Export";
+  feedbackMessage: string | null = null;
 
-  constructor(private cd: ChangeDetectorRef, private restService: RestService) {
-    this.onGetExport();
+  constructor(private cd: ChangeDetectorRef, private restService: RestService, private fileSaverService: FileSaverService) {
   }
 
   public onGetExport(): void {
@@ -37,20 +37,32 @@ export class ExportComponent {
             return dateA - dateB;
           });
 
-          this.confirmationMessage = "SUCCESS: REST requesting export";
+          this.exportToExcel();
           console.log("SUCCESS: REST requesting weight:");
         } else {
           console.error("ERROR: Response is not an array", response);
         }
       },
       error: (error): void => {
-        this.confirmationMessage = "ERROR: requesting weights failed";
+        this.feedbackMessage = "Server offline, please contact admin.";
         console.log("ERROR: requesting weights failed", error);
       },
       complete: (): void => {
         console.log("GET request completed");
       }
     });
+  }
+
+  public resetFeedback(): void {
+    this.feedbackMessage = null;
+  }
+
+  public exportToExcel(): void {
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.box_data);
+    const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const blob: Blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+    this.fileSaverService.save(blob, 'box_data.xlsx');
   }
 
 }

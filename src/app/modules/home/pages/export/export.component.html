@@ -1,1 +1,16 @@
-<p>export works!</p>
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <h3>{{ title }}</h3>
+  </header>
+
+  <div *ngIf="feedbackMessage" class="weight-estimate-container">
+    <p>{{feedbackMessage}}</p>
+    <button class="custom-button-red" (click)="resetFeedback()">OK</button>
+  </div>
+
+  <div *ngIf="!feedbackMessage" class="weight-estimate-container">
+    <button class="custom-button" (click)="onGetExport()">Download</button>
+  </div>
+
+</div>
+

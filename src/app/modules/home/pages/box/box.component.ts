@@ -2,20 +2,12 @@ import {ChangeDetectorRef, Component} from '@angular/core';
 import {BaseChartDirective} from "ng2-charts";
 import {NgIf} from "@angular/common";
 import {RestService} from "@data/services/rest.service";
-import {Chart} from "chart.js";
-import {Context} from "chartjs-plugin-datalabels";
 import 'chartjs-chart-box-and-violin-plot';
 import {MatButtonToggle, MatButtonToggleGroup} from "@angular/material/button-toggle";
 import {FormsModule} from "@angular/forms";
 import {MatDivider} from "@angular/material/divider";
+import {BoxResponse} from "@data/models/boxResponse.interface"
 
-interface BoxResponse {
-  BOX: string;
-  DATE_TIME: string;
-  ID: number;
-  STDDEV: number;
-  WEIGHT: number;
-}
 
 @Component({
   selector: 'app-box',
@@ -42,6 +34,7 @@ export class BoxComponent {
   boxPlotChart: any = null;
   barChart: any = null;
   public timeLine: string = "7";
+  public errorMessage: string | null = null;
 
   constructor(private cd: ChangeDetectorRef, private restService: RestService) {
     this.onGetBox(this.currentBox);
@@ -61,14 +54,14 @@ export class BoxComponent {
 
           this.createCharts();
           this.createBarChart()
-          this.confirmationMessage = "SUCCESS: REST requesting box:";
-          console.log("SUCCESS: REST requesting weight:");
+          this.errorMessage = null;
         } else {
+          this.errorMessage = "Server Offline, please contact Admin.";
           console.error("ERROR: Response is not an array", response);
         }
       },
       error: (error): void => {
-        this.confirmationMessage = "ERROR: requesting weights failed";
+        this.errorMessage = "Server Offline, please contact Admin.";
         console.log("ERROR: requesting weights failed", error);
       },
       complete: (): void => {

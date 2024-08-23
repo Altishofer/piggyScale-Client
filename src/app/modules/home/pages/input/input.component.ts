@@ -27,6 +27,8 @@ interface DeleteResponse {
 })
 export class InputComponent {
   public feedbackMessage: string | null = null;
+  public errorMessage: string | null = null;
+
   public showDeleteLast: boolean = false;
   public isProcessing: boolean = false;
 
@@ -56,6 +58,7 @@ export class InputComponent {
     this.realTimeEstimate = null;
     this.lowestStdDev = 0;
     this.feedbackMessage = null;
+    this.errorMessage = null;
   }
 
   public onPostFinal(): void {
@@ -74,7 +77,7 @@ export class InputComponent {
         console.log("REST reported weight:", weight);
       },
       error: (error) : void => {
-        this.feedbackMessage = `Error: ${error.message}`;
+        this.errorMessage = "Server Offline, please contact Admin.";
         console.log("ERROR: posting weight failed", error);
       },
       complete: () : void => {
@@ -91,7 +94,7 @@ export class InputComponent {
         console.log("REST deleted weight:", value.weight);
       },
       error: (error): void => {
-        this.feedbackMessage = `Error storing weight: ${error.message}`;
+        this.errorMessage = "Server Offline, please contact Admin.";
         console.log("ERROR: posting weight failed", error);
       },
       complete: (): void => {

@@ -4,6 +4,7 @@ import {ScaleComponent} from "./pages/scale/scale.component";
 import {OverviewComponent} from "@modules/home/pages/overview/overview.component";
 import {BoxComponent} from "@modules/home/pages/box/box.component";
 import {InputComponent} from "@modules/home/pages/input/input.component";
+import {ExportComponent} from "@modules/home/pages/export/export.component";
 
 const routes: Routes = [
   {
@@ -26,6 +27,10 @@ const routes: Routes = [
   {
     path:'input',
     component: InputComponent
+  },
+  {
+    path:'export',
+    component: ExportComponent
   }
 ];
 
