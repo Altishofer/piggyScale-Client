@@ -34,6 +34,7 @@ export class InputComponent {
 
   public lowestStdDev: number | null = 0;
   public realTimeEstimate: string | null = null;
+  public currentBox: string = "1";
 
   public title: string = "Manual Input";
   public validInput: boolean = false;
@@ -69,7 +70,7 @@ export class InputComponent {
       console.log("weight: ", weight, "stddev: ", stddev);
       return;
     }
-    this.restService.postFinal(weight, stddev).subscribe({
+    this.restService.postFinal(weight, stddev, this.currentBox).subscribe({
       next: (value) : void => {
         this.resetEstimate(); // Weight: {{ realTimeEstimate }} kg | StdDev: {{lowestStdDev}} kg
         this.feedbackMessage = `Weight ${weight} kg | StdDev: ${stddev} kg`;

@@ -97,10 +97,10 @@ h1, h2 {
 }
 
 .dashboard-metrics {
+  padding-bottom: 15px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+  justify-content: space-between; /* Distribute space between items */
+  align-items: flex-start; /* Align items at the top */
 }
 
 .metric {
@@ -292,6 +292,21 @@ p {
   background-color: var(--contrast-color) !important;
   color: var(--secondary-color) !important;
 }
+
+
+.estimate-container {
+  display: flex;
+  gap: 10px; /* Space between the boxes */
+}
+
+.estimate-box {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex: 1; /* Make the boxes take equal space */
+}
+
 
 
 

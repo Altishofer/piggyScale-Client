@@ -1,18 +1,19 @@
 import {Component, OnInit, ChangeDetectorRef, ViewChild} from '@angular/core';
-import {MqttService} from "../../../../data/services/mqtt.service";
+import {MqttService} from "@data/services/mqtt.service";
 import {NgFor, NgStyle} from "@angular/common";
 import {Chart, ChartConfiguration, ChartData, ChartOptions, registerables} from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 Chart.register(...registerables, ChartDataLabels);
 
 import {BaseChartDirective} from "ng2-charts";
-import {delay, min} from "rxjs";
-import {each, isNumber} from "chart.js/helpers";
+import {isNumber} from "chart.js/helpers";
 import {RestService} from "@data/services/rest.service";
 import {MatButton} from "@angular/material/button";
 import {CommonModule} from "@angular/common";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatDivider} from "@angular/material/divider";
+import {MatFormField, MatLabel} from "@angular/material/form-field";
+import {MatOption, MatSelect} from "@angular/material/select";
 
 
 interface DeleteResponse {
@@ -23,7 +24,7 @@ interface DeleteResponse {
 @Component({
   selector: 'app-scale',
   standalone: true,
-  imports: [NgFor, BaseChartDirective, NgStyle, MatButton, CommonModule, MatProgressBarModule, MatDivider],
+  imports: [NgFor, BaseChartDirective, NgStyle, MatButton, CommonModule, MatProgressBarModule, MatDivider, MatFormField, MatSelect, MatOption, MatLabel],
   templateUrl: './scale.component.html',
   styleUrl: './scale.component.css'
 })
@@ -32,16 +33,19 @@ export class ScaleComponent {
   title: string = "PiggyScale";
   counter: number = 0;
   stdDev: string = "0";
-  public feedbackMessage: string | null = null;
-  private estimation_lst: number[] = []
-  private estimate: boolean = false;
-  public errorMessage: string | null = null;
+  feedbackMessage: string | null = null;
+  estimation_lst: number[] = []
+  estimate: boolean = false;
+  errorMessage: string | null = null;
 
-  public lowestStdDev: number | null = null;
-  public realTimeEstimate: string | null = null;
+  lowestStdDev: number | null = null;
+  realTimeEstimate: string | null = null;
 
-  public showDeleteLast: boolean = false;
-  public isProcessing: boolean = false;
+  showDeleteLast: boolean = false;
+  isProcessing: boolean = false;
+
+  currentBox : number = 1;
+  nBoxes : number = 3;
 
   @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
 
@@ -252,7 +256,7 @@ export class ScaleComponent {
     if (weight == null || stddev == null){
       return;
     }
-    this.restService.postFinal(weight, stddev).subscribe({
+    this.restService.postFinal(weight, stddev, this.currentBox.toString()).subscribe({
       next: (value) : void => {
         this.resetEstimate(); // Weight: {{ realTimeEstimate }} kg | StdDev: {{lowestStdDev}} kg
         this.feedbackMessage = `Weight ${weight} kg | StdDev: ${stddev} kg`;
@@ -307,6 +311,11 @@ export class ScaleComponent {
   handleSubmitClick() {
     this.onPostFinal();
     this.isProcessing = true;
+  }
+
+  changeBox() {
+    this.currentBox = (this.currentBox + 1) % (this.nBoxes+1);
+    this.currentBox = this.currentBox > 0 ?  this.currentBox : 1;
   }
 
 }

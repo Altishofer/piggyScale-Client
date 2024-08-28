@@ -46,11 +46,22 @@
   </div>
 
   <div *ngIf="!feedbackMessage && !errorMessage" class="weight-estimate-container">
+
     <h5>Real-Time Estimate</h5>
-    <p *ngIf="realTimeEstimate && !isProcessing">
-      Weight: {{ realTimeEstimate }} kg |
-      <span [ngStyle]="{'color': getStdDevColor(lowestStdDev?.toString())}">StdDev: {{ lowestStdDev }} kg</span>
-    </p>
+    <div *ngIf="realTimeEstimate && !isProcessing" class="dashboard-metrics">
+      <div class="metric">
+        <h6>Weight</h6>
+        <p>{{ realTimeEstimate }}</p>
+      </div>
+      <div class="metric" >
+        <h6>StdDev</h6>
+        <p [ngStyle]="{'color': getStdDevColor(lowestStdDev?.toString())}">{{ lowestStdDev }}</p>
+      </div>
+      <div class="metric" >
+        <h6>Box</h6>
+        <button class="custom-button" style="width: 15vw; height: 3vh; margin: 0; padding: 0;" (click)="changeBox()">{{currentBox}}</button>
+      </div>
+    </div>
 
     <div class="dashboard-actions">
       <div *ngIf="isProcessing || realTimeEstimate == null; else buttons">
