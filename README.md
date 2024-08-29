@@ -5,12 +5,10 @@
 ![pandas](https://img.shields.io/badge/pandas-2.2.2-blue)
 ![flask_cors](https://img.shields.io/badge/flask__cors-4.0.1-purple)
 
-
 # Piggy Scale: 
-🎉 Real Time Scale and Weight Analytics 🎉
+🎉 Real-Time Scale and Weight Analytics 🎉
 
-This repository holds all three components of the message chain. The Scale component processes the hardware signal from the weight cells and publishes all measurements to the MQTT-Server. The MQTT-Server buffers the real time measurements and provides them to all subscribed web Clients. The web Client subscribes the real-time signals and loads the previous weights from the database, allowing the user to generally manipulate, visualize and analyze the current and previous measurements. The Server provides the Client with previous measurements and provides an interface for writing, retrieving and manipulating permanently stored records.
-
+This repository contains all three components of the Piggy Scale system. The Scale component reads data from the load cells and publishes the measurements to the MQTT server. The MQTT server stores these real-time measurements and makes them available to all subscribed web clients. The web client subscribes to these real-time signals and loads previous weights from the database, allowing users to view, visualize, and analyze both current and historical measurements. The server handles requests from the client to read, write, and manipulate stored records.
 
 ## Table of Contents
 
@@ -20,32 +18,31 @@ This repository holds all three components of the message chain. The Scale compo
 - [Hardware](#hardware)
 - [Deployment](#deployment)
 
-
-
 ## Features
-- Real time visualization of scale output
-- Automatic weight estimation with real time weights
-- Manually storing, retrieving and manipulating weights
-- View and analyze history and trends of different pig batches
-- Export measurements to Excel
+- Real-time visualization of scale data
+- Automatic weight estimation using real-time measurements
+- Manual storage, retrieval, and manipulation of weight data
+- View and analyze the history and trends of different pig batches
+- Export measurement data to Excel
 
 ## Built With
 
-- **[Mosquitto](https://mosquitto.org/):** Open source message broker that implements the MQTT protocol.
-- **[Paho](https://www.eclipse.org/paho/):** Eclipse project providing MQTT and MQTT-SN client implementations.
-- **[Python](https://www.python.org/):** High-level programming language for general-purpose programming.
-- **[Flask](https://flask.palletsprojects.com/):** Lightweight WSGI web application framework in Python.
-- **[Angular](https://angular.io/):** Platform and framework for building single-page client applications using HTML and TypeScript.
-- **[TypeScript](https://www.typescriptlang.org/):** Typed superset of JavaScript that compiles to plain JavaScript.
-- **[SQLite3](https://sqlite.org/index.html):** C-language library that provides a lightweight, disk-based database.
-
+- **[Mosquitto](https://mosquitto.org/):** An open-source message broker that implements the MQTT protocol.
+- **[Paho](https://www.eclipse.org/paho/):** A python library for interacting with the mosquitto MQTT broker.
+- **[Python](https://www.python.org/):** The current prototype of the serverside is written in the general purpose language.
+- **[Flask](https://flask.palletsprojects.com/):** A lightweight web application framework for Python.
+- **[Angular](https://angular.io/):** A platform for building web applications using TypeScript.
+- **[TypeScript](https://www.typescriptlang.org/):** The Client is written in TypeScript, a more statically typed version of JavaScrippt.
+- **[SQLite3](https://sqlite.org/index.html):** A python library for manipulating lightweight open source database files.
 
 ## Main Components
 
-- **[REST-Server](https://github.com/Altishofer/piggyScale/tree/main/server):** Initializes a REST server for interacting with the database, holding the permanent records.
-- **[Scale](https://github.com/Altishofer/piggyScale/tree/main/scale):** Processes the hardware signal and publishes real time measurements to the MQTT-server.
-- **[Client](https://github.com/Altishofer/piggyScale/tree/main/src):** Angular web platform, subscribing to the scale's real time updates and the servers database records.
-- **[MQTT-Server](https://github.com/Altishofer/piggyScale/tree/main/server):** MQTT-Server for buffering real time measurements from the Scale and forwarding them to the subscribed Clients.
+- **[REST Server](https://github.com/Altishofer/piggyScale/tree/main/server):** Manages a RESTful API for interacting with the database, which stores permanent records.
+- **[Scale](https://github.com/Altishofer/piggyScale/tree/main/scale):** Captures data from the hardware and publishes real-time measurements to the MQTT server.
+- **[Client](https://github.com/Altishofer/piggyScale/tree/main/src):** An Angular-based web platform that subscribes to real-time updates from the scale and retrieves data from the server's database.
+- **[MQTT Server](https://github.com/Altishofer/piggyScale/tree/main/server):** Buffers real-time measurements from the Scale and forwards them to subscribed clients.
+
+
 
 ## Hardware
 
