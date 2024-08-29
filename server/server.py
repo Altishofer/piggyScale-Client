@@ -25,7 +25,7 @@ def final():
   box = data.get('box')
   date_time = datetime.now().strftime("%Y.%m.%d %H:%M:%S")
 
-  with sqlite3.connect("./database/database.db") as db:
+  with sqlite3.connect("./database.db") as db:
     cursor = db.cursor()
     cursor.execute(
       "INSERT INTO PIGS (DATE_TIME, BOX, WEIGHT, STDDEV) VALUES (?,?,?,?)",
@@ -38,7 +38,7 @@ def final():
 
 @app.route('/deleteLast', methods=['POST'])
 def delete_last():
-  with sqlite3.connect("./database/database.db") as db:
+  with sqlite3.connect("./database.db") as db:
     cursor = db.cursor()
 
     # Select the row with the highest id
@@ -68,7 +68,7 @@ def delete_last():
 
 @app.route('/overview')
 def all():
-  with sqlite3.connect("./database/database.db") as db:
+  with sqlite3.connect("./database.db") as db:
     df = pd.read_sql_query("SELECT * FROM PIGS", db)
     data_by_box = {
       str(box): df[df['BOX'] == box].to_dict(orient='records') for box in df['BOX'].unique()
@@ -82,7 +82,7 @@ def box(box_nr: int, days: int):
   if days == 0:
     days = 10**3
 
-  with sqlite3.connect("./database/database.db") as db:
+  with sqlite3.connect("./database.db") as db:
 
     current_date = datetime.now()
 
@@ -112,7 +112,7 @@ def box(box_nr: int, days: int):
 @app.route('/export')
 def export():
 
-  with sqlite3.connect("./database/database.db") as db:
+  with sqlite3.connect("./database.db") as db:
 
     query = """
         SELECT * FROM PIGS
@@ -134,7 +134,7 @@ def write():
       date_time = datetime.now() - timedelta(days=delta)
       date_time = date_time.strftime("%Y.%m.%d %H:%M:%S")
 
-      with sqlite3.connect("./database/database.db") as db:
+      with sqlite3.connect("./database.db") as db:
         cursor = db.cursor()
         cursor.execute(
           "INSERT INTO PIGS (DATE_TIME, BOX, WEIGHT, STDDEV) VALUES (?,?,?,?)",
