@@ -49,14 +49,14 @@ export class BoxComponent {
   }
 
   public onGetBox(box: string): void {
-    this.restService.getBox(box, this.timeLine).subscribe({
+    this.restService.getBox(box, this.timeLine, this.userId).subscribe({
       next: (response): void => {
         if (Array.isArray(response)) {
           this.box_data = response as BoxResponse[];
 
           this.box_data.sort((a, b) => {
-            const dateA = new Date(a.DATE_TIME).getTime();
-            const dateB = new Date(b.DATE_TIME).getTime();
+            const dateA = new Date(a.dateTime).getTime();
+            const dateB = new Date(b.dateTime).getTime();
             return dateA - dateB;
           });
 
@@ -91,7 +91,7 @@ export class BoxComponent {
 
     // Group weights by date
     this.box_data.forEach((item: BoxResponse) => {
-      const dateTime = item.DATE_TIME.split(' ')[0]; // Extract date part "DD.MM.YYYY"
+      const dateTime = item.dateTime.split(' ')[0]; // Extract date part "DD.MM.YYYY"
       const [ year, month, day] = dateTime.split('.'); // Split by '.' to get day, month, year
 
       // Convert to "YYYY-MM-DD" format for correct sorting
@@ -100,7 +100,7 @@ export class BoxComponent {
       if (!dailyWeights[formattedDate]) {
         dailyWeights[formattedDate] = [];
       }
-      dailyWeights[formattedDate].push(item.WEIGHT);
+      dailyWeights[formattedDate].push(item.weight);
     });
 
     // Sort the dates in "YYYY-MM-DD" format
@@ -215,7 +215,7 @@ export class BoxComponent {
     const categoryCounts = new Array(weightCategories.length).fill(0);
 
     this.box_data.forEach(box => {
-      const weight = box.WEIGHT;
+      const weight = box.weight;
       if (weight >= 0 && weight <= 110) {
         const categoryIndex = Math.floor(weight / 10);
         categoryCounts[categoryIndex]++;

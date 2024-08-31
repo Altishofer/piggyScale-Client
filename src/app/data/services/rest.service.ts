@@ -26,9 +26,9 @@ export class RestService {
     );
   }
 
-  deleteLastFinal(): Observable<any> {
+  deleteLastFinal(userId: string): Observable<any> {
     return this.http.post<any>(
-      this.weightUrl + "/deleteLast",
+      this.weightUrl + "/deleteLast/" + userId,
       {},
       { headers: { 'Content-Type': 'application/json' } }
     );
@@ -38,19 +38,20 @@ export class RestService {
     return this.http.get<any>(
       this.weightUrl + "/overview",
       { headers: { 'Content-Type': 'application/json' }
-      });
-    }
+      }
+    );
+  }
 
-    getBox(box: string, timeLine: string): Observable<any> {
-      return this.http.get<any>(
-        this.weightUrl + "/box/" + box + "/" + timeLine,
-        { headers: { 'Content-Type': 'application/json' } }
-      );
-    }
-
-  getAll(): Observable<any> {
+  getBox(box: string, days: string, userId: string): Observable<any> {
     return this.http.get<any>(
-      this.weightUrl + "/export",
+      this.weightUrl + "/box/" + box + "/" + days + "/" + userId,
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+
+  getAll(userId: string): Observable<any> {
+    return this.http.get<any>(
+      this.weightUrl + "/export/" + userId,
       { headers: { 'Content-Type': 'application/json' } }
     );
   }

@@ -287,7 +287,7 @@ export class ScaleComponent {
   }
 
   public onDeleteLastFinal(): void {
-    this.restService.deleteLastFinal().subscribe({
+    this.restService.deleteLastFinal(this.userId).subscribe({
       next: (value: DeleteResponse) : void => {
         this.showDeleteLast = false;
         this.feedbackMessage = `Weight ${value.weight} kg | StdDev: ${value.stddev} kg`;

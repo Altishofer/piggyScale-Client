@@ -6,7 +6,7 @@ import {MqttService} from "@data/services/mqtt.service";
 import {RestService} from "@data/services/rest.service";
 import {FormsModule} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
-
+import {isNumber} from "chart.js/helpers";
 
 interface DeleteResponse {
   weight: number;
@@ -58,6 +58,9 @@ export class InputComponent {
   }
 
   checkIfFloatOrInt(num: string): boolean {
+    if (num == null){
+      return false;
+    }
     if (isNaN(+num) || !isFinite(+num) || /e/i.test(num)){
       return false;
     }
@@ -98,7 +101,7 @@ export class InputComponent {
   }
 
   public onDeleteLastFinal(): void {
-    this.restService.deleteLastFinal().subscribe({
+    this.restService.deleteLastFinal(this.userId).subscribe({
       next: (value: DeleteResponse): void => {
         this.showDeleteLast = false;
         this.feedbackMessage = `Weight ${value.weight} kg | StdDev: ${value.stddev} kg`;

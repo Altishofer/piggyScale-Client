@@ -35,14 +35,14 @@ export class ExportComponent {
   }
 
   public onGetExport(): void {
-    this.restService.getAll().subscribe({
+    this.restService.getAll(this.userId).subscribe({
       next: (response): void => {
         if (Array.isArray(response)) {
           this.box_data = response as BoxResponse[];
 
           this.box_data.sort((a, b) => {
-            const dateA = new Date(a.DATE_TIME).getTime();
-            const dateB = new Date(b.DATE_TIME).getTime();
+            const dateA = new Date(a.dateTime).getTime();
+            const dateB = new Date(b.dateTime).getTime();
             return dateA - dateB;
           });
 

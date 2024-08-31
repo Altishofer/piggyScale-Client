@@ -1,7 +1,7 @@
 export interface BoxResponse {
-  ID: number;
-  BOX: string;
-  DATE_TIME: string;
-  STDDEV: number;
-  WEIGHT: number;
+  weightId: number;
+  boxNumber: string;
+  dateTime: string;
+  stddev: number;
+  weight: number;
 }
