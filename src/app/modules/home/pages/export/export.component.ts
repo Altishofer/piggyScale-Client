@@ -5,6 +5,7 @@ import {NgIf} from "@angular/common";
 import * as XLSX from 'xlsx';
 import { FileSaverService } from 'ngx-filesaver';
 import {BoxResponse} from "@data/models/boxResponse.interface"
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-export',
@@ -21,8 +22,16 @@ export class ExportComponent {
   box_data: BoxResponse[] = [];
   title: string = "Export";
   feedbackMessage: string | null = null;
+  userId: string = "";
 
-  constructor(private cd: ChangeDetectorRef, private restService: RestService, private fileSaverService: FileSaverService) {
+  constructor(
+    private restService: RestService,
+    private fileSaverService: FileSaverService,
+    private route: ActivatedRoute
+  ) {
+    this.route.params.subscribe(params => {
+      this.userId = params['userId'];
+    });
   }
 
   public onGetExport(): void {

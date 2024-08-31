@@ -3,6 +3,7 @@ import {BaseChartDirective} from "ng2-charts";
 import {CommonModule, NgIf} from "@angular/common";
 import {MqttService} from "@data/services/mqtt.service";
 import {RestService} from "@data/services/rest.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-overview',
@@ -20,9 +21,15 @@ export class OverviewComponent {
   data: any;
   charts: any[] = [];
   confirmationMessage: string | null = null;
+  userId: string = "";
 
-  constructor(private cd: ChangeDetectorRef, private restService: RestService) {
-
+  constructor(
+    private restService: RestService,
+    private route: ActivatedRoute
+  ) {
+    this.route.params.subscribe(params => {
+      this.userId = params['userId'];
+    });
   }
 
 

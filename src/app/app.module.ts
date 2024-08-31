@@ -13,8 +13,9 @@ import {HttpClientModule} from "@angular/common/http";
 import {MatButtonModule} from '@angular/material/button';
 import {RouterModule} from "@angular/router";
 import { CommonModule } from '@angular/common';
-import {MatInputModule} from "@angular/material/input";
-import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatHint, MatInputModule} from "@angular/material/input";
+import {MatFormFieldModule, MatLabel} from "@angular/material/form-field";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,9 @@ import {MatFormFieldModule} from "@angular/material/form-field";
     CommonModule,
     MatFormFieldModule,
     MatInputModule,
+    MatLabel,
+    MatHint,
+    BrowserAnimationsModule
   ],
   providers: [{
     provide: LocationStrategy,

@@ -14,6 +14,7 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatDivider} from "@angular/material/divider";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatOption, MatSelect} from "@angular/material/select";
+import {ActivatedRoute} from "@angular/router";
 
 
 interface DeleteResponse {
@@ -47,9 +48,21 @@ export class ScaleComponent {
   currentBox : number = 1;
   nBoxes : number = 3;
 
+  userId: string = "";
+
   @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
 
-  constructor(private mqttService: MqttService, private cd: ChangeDetectorRef, private restService: RestService) {
+  constructor(
+    private mqttService: MqttService,
+    private cd: ChangeDetectorRef,
+    private restService: RestService,
+    private route: ActivatedRoute
+  ) {
+
+    this.route.params.subscribe(params => {
+      this.userId = params['userId'];
+    });
+
     this.mqttService.client.on('message', (topic: any, message: { toString: () => string; }) => {
       this.addDataToChart(new Date(), parseFloat(String(message)));
     });
@@ -256,7 +269,7 @@ export class ScaleComponent {
     if (weight == null || stddev == null){
       return;
     }
-    this.restService.postFinal(weight, stddev, this.currentBox.toString()).subscribe({
+    this.restService.postFinal(weight, stddev, this.currentBox.toString(), this.userId).subscribe({
       next: (value) : void => {
         this.resetEstimate(); // Weight: {{ realTimeEstimate }} kg | StdDev: {{lowestStdDev}} kg
         this.feedbackMessage = `Weight ${weight} kg | StdDev: ${stddev} kg`;

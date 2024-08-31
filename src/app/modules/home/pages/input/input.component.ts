@@ -5,6 +5,7 @@ import {NgIf} from "@angular/common";
 import {MqttService} from "@data/services/mqtt.service";
 import {RestService} from "@data/services/rest.service";
 import {FormsModule} from "@angular/forms";
+import {ActivatedRoute} from "@angular/router";
 
 
 interface DeleteResponse {
@@ -39,7 +40,16 @@ export class InputComponent {
   public title: string = "Manual Input";
   public validInput: boolean = false;
 
-  constructor(private mqttService: MqttService, private cd: ChangeDetectorRef, private restService: RestService) {
+  userId: string = "";
+
+  constructor(
+    private restService: RestService,
+    private route: ActivatedRoute
+  ) {
+
+    this.route.params.subscribe(params => {
+      this.userId = params['userId'];
+    });
   }
 
   onInputChange(value: string) {
@@ -70,7 +80,7 @@ export class InputComponent {
       console.log("weight: ", weight, "stddev: ", stddev);
       return;
     }
-    this.restService.postFinal(weight, stddev, this.currentBox).subscribe({
+    this.restService.postFinal(weight, stddev, this.currentBox, this.userId).subscribe({
       next: (value) : void => {
         this.resetEstimate(); // Weight: {{ realTimeEstimate }} kg | StdDev: {{lowestStdDev}} kg
         this.feedbackMessage = `Weight ${weight} kg | StdDev: ${stddev} kg`;

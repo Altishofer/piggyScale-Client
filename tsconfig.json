@@ -28,7 +28,8 @@
       "@core/*": ["app/core/*"],
       "@modules/*": ["app/modules/*"],
       "@data/*": ["app/data/*"],
-      "@layout/*": ["app/layout/*"]
+      "@layout/*": ["app/layout/*"],
+      "@environments/*": ["../environments/*"]
     }
   },
   "angularCompilerOptions": {

@@ -7,6 +7,7 @@ import {MatButtonToggle, MatButtonToggleGroup} from "@angular/material/button-to
 import {FormsModule} from "@angular/forms";
 import {MatDivider} from "@angular/material/divider";
 import {BoxResponse} from "@data/models/boxResponse.interface"
+import {ActivatedRoute} from "@angular/router";
 
 
 @Component({
@@ -35,8 +36,15 @@ export class BoxComponent {
   barChart: any = null;
   public timeLine: string = "7";
   public errorMessage: string | null = null;
+  userId: string = "";
 
-  constructor(private cd: ChangeDetectorRef, private restService: RestService) {
+  constructor(
+    private restService: RestService,
+    private route: ActivatedRoute
+  ) {
+    this.route.params.subscribe(params => {
+      this.userId = params['userId'];
+    });
     this.onGetBox(this.currentBox);
   }
 

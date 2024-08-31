@@ -1,0 +1,47 @@
+<!-- src/app/login/login.component.html -->
+
+<div class="center">
+  <mat-card class="card-element">
+    <mat-card-header class="login-header">
+      <mat-card-title style="font-size: xx-large">{{ isLogin ? 'Login' : 'Register' }}</mat-card-title>
+    </mat-card-header>
+    <form [formGroup]="loginForm">
+      <mat-card-content>
+        <div>
+          <mat-form-field class="login-input">
+            <mat-label>Username</mat-label>
+            <input matInput formControlName="username">
+            <mat-hint *ngIf='loginForm.get("username")?.hasError("maxlength")' style="color: red">Username is over 10 characters long!</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-form-field class="login-input">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" formControlName="password">
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-error *ngIf="errorMsg" class="error-message">
+            <b>{{ isLogin ? 'Login' : 'Registration' }} failed</b><br>
+            {{ errorMsg }}
+          </mat-error>
+        </div>
+      </mat-card-content>
+      <button mat-raised-button color="positive" class="btn-block" routerLinkActive="active" [disabled]="loginForm.invalid" (click)="doAction()">
+        {{ isLogin ? 'Sign In' : 'Register' }}
+      </button>
+
+      <mat-divider class="common-divider"></mat-divider>
+
+      <p class="login-message">
+        {{ isLogin ? 'No account yet?' : 'Already have an account?' }}
+      </p>
+
+      <button mat-raised-button color="positive" class="btn-block" (click)="toggleForm();">
+        {{ isLogin ? 'Register' : 'Sign In' }}
+      </button>
+    </form>
+  </mat-card>
+</div>

@@ -5,32 +5,37 @@ import {OverviewComponent} from "@modules/home/pages/overview/overview.component
 import {BoxComponent} from "@modules/home/pages/box/box.component";
 import {InputComponent} from "@modules/home/pages/input/input.component";
 import {ExportComponent} from "@modules/home/pages/export/export.component";
+import {LoginComponent} from "@modules/home/pages/login/login.component";
 
 const routes: Routes = [
   {
     path:'',
-    redirectTo: 'scale',
+    redirectTo: 'login',
     pathMatch: 'prefix'
   },
   {
-    path:'scale',
+    path: 'scale/:userId',
     component: ScaleComponent
   },
   {
-    path:'overview',
+    path:'overview/:userId',
     component: OverviewComponent
   },
   {
-    path:'box',
+    path:'box/:userId',
     component: BoxComponent
   },
   {
-    path:'input',
+    path:'input/:userId',
     component: InputComponent
   },
   {
-    path:'export',
+    path:'export/:userId',
     component: ExportComponent
+  },
+  {
+    path:'login',
+    component: LoginComponent
   }
 ];
 
