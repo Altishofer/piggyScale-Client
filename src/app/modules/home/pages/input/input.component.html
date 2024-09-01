@@ -25,9 +25,9 @@
     </div>
 
     <button class="custom-button" (click)="handleResetClick()">Reset</button>
-    <button class="custom-button" [disabled]="!validInput" (click)="handleSubmitClick()">
-      Submit
-    </button>
+    <button class="custom-button" [disabled]="!validInput" (click)="handleSubmitClick()">Submit</button>
+    <button class="custom-button" (click)="changeBox()">Box {{currentBox}}</button>
+
   </div>
 
 </div>

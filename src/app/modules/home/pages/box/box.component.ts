@@ -36,20 +36,18 @@ export class BoxComponent {
   barChart: any = null;
   public timeLine: string = "7";
   public errorMessage: string | null = null;
-  userId: string = "";
+
 
   constructor(
     private restService: RestService,
     private route: ActivatedRoute
   ) {
-    this.route.params.subscribe(params => {
-      this.userId = params['userId'];
-    });
+
     this.onGetBox(this.currentBox);
   }
 
   public onGetBox(box: string): void {
-    this.restService.getBox(box, this.timeLine, this.userId).subscribe({
+    this.restService.getBox(box, this.timeLine).subscribe({
       next: (response): void => {
         if (Array.isArray(response)) {
           this.box_data = response as BoxResponse[];

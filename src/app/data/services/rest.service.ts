@@ -18,41 +18,65 @@ export class RestService {
 
   constructor(private http: HttpClient, private cookieService: CookieService) {}
 
-  postFinal(weight: string, stddev: string, box: string, userId: string): Observable<any> {
+  postFinal(weight: string, stddev: string, box: string): Observable<any> {
+    const headers : HttpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Bearer-Token':  this.cookieService.get("userToken"),
+      'Authorization': `bearer ${this.cookieService.get("userToken")}`
+    });
     return this.http.post<any>(
       this.weightUrl + "/store",
-      { weight: weight, box: box , stddev: stddev, userId: userId},
-      { headers: { 'Content-Type': 'application/json' } }
+      { weight: weight, box: box , stddev: stddev},
+      { headers: headers }
     );
   }
 
-  deleteLastFinal(userId: string): Observable<any> {
+  deleteLastFinal(): Observable<any> {
+    const headers : HttpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Bearer-Token':  this.cookieService.get("userToken"),
+      'Authorization': `bearer ${this.cookieService.get("userToken")}`
+    });
     return this.http.post<any>(
-      this.weightUrl + "/deleteLast/" + userId,
+      this.weightUrl + "/deleteLast/",
       {},
-      { headers: { 'Content-Type': 'application/json' } }
+      { headers: headers }
     );
   }
 
   getOverview(): Observable<any> {
+    const headers : HttpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Bearer-Token':  this.cookieService.get("userToken"),
+      'Authorization': `bearer ${this.cookieService.get("userToken")}`
+    });
     return this.http.get<any>(
       this.weightUrl + "/overview",
-      { headers: { 'Content-Type': 'application/json' }
-      }
+      { headers: headers }
     );
   }
 
-  getBox(box: string, days: string, userId: string): Observable<any> {
+  getBox(box: string, days: string): Observable<any> {
+    const headers : HttpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Bearer-Token':  this.cookieService.get("userToken"),
+      'Authorization': `bearer ${this.cookieService.get("userToken")}`
+    });
     return this.http.get<any>(
-      this.weightUrl + "/box/" + box + "/" + days + "/" + userId,
-      { headers: { 'Content-Type': 'application/json' } }
+      this.weightUrl + "/box/" + box + "/" + days,
+      { headers: headers }
     );
   }
 
-  getAll(userId: string): Observable<any> {
+  getAll(): Observable<any> {
+    const headers : HttpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Bearer-Token':  this.cookieService.get("userToken"),
+      'Authorization': `bearer ${this.cookieService.get("userToken")}`
+    });
     return this.http.get<any>(
-      this.weightUrl + "/export/" + userId,
-      { headers: { 'Content-Type': 'application/json' } }
+      this.weightUrl + "/export",
+      { headers: headers }
     );
   }
 
@@ -96,15 +120,5 @@ export class RestService {
         });
     }, 10 * 1000);//15 * 60 * 1000); // Refresh every 15 minutes
   }
-
-
-  getRound(roundId : string) : Observable<any> {
-    const headers = new HttpHeaders({
-      'Authorization': "bearer " + this.cookieService.get("userToken"),
-      'Content-Type': 'application/json'
-    });
-    return this.http.get(`${this.weightUrl}/GetRound/${roundId}`, { observe:'response', headers  });
-  }
-
 
 }

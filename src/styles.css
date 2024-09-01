@@ -42,6 +42,16 @@ h1, h2 {
   box-sizing: border-box; /* Ensures padding and borders are included in width/height */
 }
 
+.login-container {
+  margin: 60px auto 20px auto; /* Center container and adjust margins */
+  padding: 0 20px;
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  flex-direction: column; /* Stack header and card vertically */
+  box-sizing: border-box;
+}
+
 .dashboard-header {
   text-align: center;
   margin: 20px;
@@ -160,7 +170,7 @@ p {
 
 .custom-button:not(:disabled):hover,
 .custom-button-red:not(:disabled):hover {
-  background-color: var(--danger-color);
+  background-color: var(--contrast-color);
   color: var(--secondary-color);
 }
 
@@ -342,9 +352,8 @@ p {
   max-width: 500px;
   height: 100%;
   text-align: center;
-  margin-top: 50px;
-
 }
+
 .login-header {
   text-align: center;
   display: block;

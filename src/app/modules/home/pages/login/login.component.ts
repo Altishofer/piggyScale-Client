@@ -106,7 +106,7 @@ export class LoginComponent implements OnInit{
           localStorage.setItem('userName', this.user.userName);
           localStorage.setItem('userId', response.body.id);
           this.restService.refreshTokenPeriodically();
-          this.router.navigate(["scale", response.body.id]);
+          this.router.navigate(["scale"]);
         } else {
           this.errorMsg = this.unexpectedErrorMsg;
         }

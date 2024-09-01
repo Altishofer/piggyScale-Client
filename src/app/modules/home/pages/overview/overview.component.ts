@@ -21,15 +21,13 @@ export class OverviewComponent {
   data: any;
   charts: any[] = [];
   confirmationMessage: string | null = null;
-  userId: string = "";
+
 
   constructor(
     private restService: RestService,
     private route: ActivatedRoute
   ) {
-    this.route.params.subscribe(params => {
-      this.userId = params['userId'];
-    });
+
   }
 
 

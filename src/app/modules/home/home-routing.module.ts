@@ -6,6 +6,7 @@ import {BoxComponent} from "@modules/home/pages/box/box.component";
 import {InputComponent} from "@modules/home/pages/input/input.component";
 import {ExportComponent} from "@modules/home/pages/export/export.component";
 import {LoginComponent} from "@modules/home/pages/login/login.component";
+import {loggedInGuard} from "@data/guards/authentication.guard";
 
 const routes: Routes = [
   {
@@ -14,24 +15,29 @@ const routes: Routes = [
     pathMatch: 'prefix'
   },
   {
-    path: 'scale/:userId',
-    component: ScaleComponent
+    path: 'scale',
+    component: ScaleComponent,
+    canActivate: [loggedInGuard]
   },
   {
-    path:'overview/:userId',
-    component: OverviewComponent
+    path:'overview',
+    component: OverviewComponent,
+    canActivate: [loggedInGuard]
   },
   {
-    path:'box/:userId',
-    component: BoxComponent
+    path:'box',
+    component: BoxComponent,
+    canActivate: [loggedInGuard]
   },
   {
-    path:'input/:userId',
-    component: InputComponent
+    path:'input',
+    component: InputComponent,
+    canActivate: [loggedInGuard]
   },
   {
-    path:'export/:userId',
-    component: ExportComponent
+    path:'export',
+    component: ExportComponent,
+    canActivate: [loggedInGuard]
   },
   {
     path:'login',

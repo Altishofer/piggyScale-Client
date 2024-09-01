@@ -22,20 +22,18 @@ export class ExportComponent {
   box_data: BoxResponse[] = [];
   title: string = "Export";
   feedbackMessage: string | null = null;
-  userId: string = "";
+
 
   constructor(
     private restService: RestService,
     private fileSaverService: FileSaverService,
     private route: ActivatedRoute
   ) {
-    this.route.params.subscribe(params => {
-      this.userId = params['userId'];
-    });
+
   }
 
   public onGetExport(): void {
-    this.restService.getAll(this.userId).subscribe({
+    this.restService.getAll().subscribe({
       next: (response): void => {
         if (Array.isArray(response)) {
           this.box_data = response as BoxResponse[];

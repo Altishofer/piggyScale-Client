@@ -35,21 +35,21 @@ export class InputComponent {
 
   public lowestStdDev: number | null = 0;
   public realTimeEstimate: string | null = null;
-  public currentBox: string = "1";
 
   public title: string = "Manual Input";
   public validInput: boolean = false;
 
-  userId: string = "";
+  currentBox : number = 1;
+  nBoxes : number = 3;
+
+
 
   constructor(
     private restService: RestService,
     private route: ActivatedRoute
   ) {
 
-    this.route.params.subscribe(params => {
-      this.userId = params['userId'];
-    });
+
   }
 
   onInputChange(value: string) {
@@ -83,7 +83,7 @@ export class InputComponent {
       console.log("weight: ", weight, "stddev: ", stddev);
       return;
     }
-    this.restService.postFinal(weight, stddev, this.currentBox, this.userId).subscribe({
+    this.restService.postFinal(weight, stddev, this.currentBox.toString()).subscribe({
       next: (value) : void => {
         this.resetEstimate(); // Weight: {{ realTimeEstimate }} kg | StdDev: {{lowestStdDev}} kg
         this.feedbackMessage = `Weight ${weight} kg | StdDev: ${stddev} kg`;
@@ -101,7 +101,7 @@ export class InputComponent {
   }
 
   public onDeleteLastFinal(): void {
-    this.restService.deleteLastFinal(this.userId).subscribe({
+    this.restService.deleteLastFinal().subscribe({
       next: (value: DeleteResponse): void => {
         this.showDeleteLast = false;
         this.feedbackMessage = `Weight ${value.weight} kg | StdDev: ${value.stddev} kg`;
@@ -133,6 +133,11 @@ export class InputComponent {
   handleSubmitClick() {
     this.onPostFinal();
     this.isProcessing = true;
+  }
+
+  changeBox() {
+    this.currentBox = (this.currentBox + 1) % (this.nBoxes+1);
+    this.currentBox = this.currentBox > 0 ?  this.currentBox : 1;
   }
 
 }
