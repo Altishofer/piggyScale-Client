@@ -121,4 +121,16 @@ export class RestService {
     }, 10 * 1000);//15 * 60 * 1000); // Refresh every 15 minutes
   }
 
+  isUserTokenValid(): boolean {
+    const userToken = this.cookieService.get('userToken');
+    if (!userToken) {
+      return false;
+    }
+
+    const tokenExpiration = new Date(this.cookieService.get('userTokenExpiration'));
+    const currentTime = new Date();
+
+    return currentTime < tokenExpiration && !!localStorage.getItem('userName') && !!localStorage.getItem('userId');
+  }
+
 }

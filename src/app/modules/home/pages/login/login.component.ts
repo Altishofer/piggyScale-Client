@@ -68,6 +68,9 @@ export class LoginComponent implements OnInit{
   };
 
   ngOnInit() {
+    if (this.restService.isUserTokenValid()){
+      this.router.navigate(["scale"]);
+    }
   }
 
   user: User = {
@@ -100,15 +103,24 @@ export class LoginComponent implements OnInit{
 
   actionWrapper(serviceMethod: (user: User) => Observable<any>, actionName: string): void {
     serviceMethod(this.user)
-      .subscribe((response: any): void => {
-        if ((response.status >= 200 && response.status < 300) || response.status == 304) {
-          this.cookieService.set('userToken', response.body.token.result, new Date().setHours(new Date().getHours() + 1));
-          localStorage.setItem('userName', this.user.userName);
-          localStorage.setItem('userId', response.body.id);
-          this.restService.refreshTokenPeriodically();
-          this.router.navigate(["scale"]);
-        } else {
-          this.errorMsg = this.unexpectedErrorMsg;
+      .subscribe({
+        next: (response: any): void => {
+          if ((response.status >= 200 && response.status < 300) || response.status == 304) {
+            this.cookieService.set('userToken', response.body.token.result, new Date().setHours(new Date().getHours() + 1));
+            localStorage.setItem('userName', this.user.userName);
+            localStorage.setItem('userId', response.body.id);
+            this.restService.refreshTokenPeriodically();
+            this.router.navigate(["scale"]);
+          } else {
+            this.errorMsg = this.unexpectedErrorMsg;
+          }
+        },
+        error: (error: any): void => {
+          if (error.status === 0) {
+            this.errorMsg = this.statusCodeZero;
+          } else {
+            this.errorMsg = this.unexpectedErrorMsg;
+          }
         }
       });
   }

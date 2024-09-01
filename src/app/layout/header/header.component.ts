@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import {RouterLink, RouterLinkActive} from "@angular/router";
+import {ActivatedRoute, RouterLink, RouterLinkActive} from "@angular/router";
 import {NgIf} from "@angular/common";
+import {RestService} from "@data/services/rest.service";
+import {FileSaverService} from "ngx-filesaver";
 
 @Component({
   selector: 'app-header',
@@ -14,7 +16,15 @@ import {NgIf} from "@angular/common";
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
+
+  constructor(
+    private restService: RestService,
+    private route: ActivatedRoute
+  ) {
+
+  }
+
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('userName') || !!localStorage.getItem('userId');
+    return this.restService.isUserTokenValid();
   }
 }
