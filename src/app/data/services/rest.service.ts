@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParamsOptions} from '@angular/common/http';
 import { CookieService } from "ngx-cookie-service";
-import { environment } from "@environments/environment";
+import { environment } from "../../../environments/environment";
 
 import { User } from '@data/models/user.interface'
 import {catchError, Observable, tap} from "rxjs";
