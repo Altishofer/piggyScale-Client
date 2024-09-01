@@ -1,24 +1,32 @@
 :root {
-  --primary-color: #153448; /* Black */
-  --secondary-color: #ffffff; /* White */
-  --accent-color: #DFD0B8; /* Bright orange */
-  --background-color: #f9f9f9; /* Light grey */
-  --contrast-color: #556e7e; /* Dark grey */
-  --muted-color: #e5e5ea; /* Muted grey */
-  --danger-color: #948979; /* Red for error states */
-  --divider-color: #000000; /* Light divider grey */
+  --primary-color: #0D3B66; /* Dark Blue */
+  --secondary-color: #F0F4F8; /* Light Cream */
+  --accent-color: #e2eefa; /* Yellow */
+  --background-color: #F0F4F8; /* Soft Light Blue */
+  --contrast-color: #0D3B66; /* Muted Teal */
+  --danger-color: #752B2B; /* Bright Red */
+  --submit-color: #78938a;
+  --box-color: #204567;
 }
 
-
-
+/*
+:root {
+  --primary-color: #0D3B66;
+  --secondary-color: #FAF0CA;
+  --accent-color: #F4D35E;
+  --background-color: #F0F4F8;
+  --contrast-color: #3C6E71;
+  --danger-color: #EE6352;
+}
+*/
 
 body {
   background-color: var(--background-color);
   color: var(--contrast-color);
   margin: 0;
   padding: 0;
-  box-sizing: border-box; /* Ensures padding and borders are included in width/height */
-  overflow-x: hidden; /* Prevents horizontal scrolling */
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 h1, h2 {
@@ -35,20 +43,20 @@ h1, h2 {
 }
 
 .dashboard-container {
-  max-width: 100%; /* Ensures container doesn't exceed screen width */
-  width: 100%; /* Ensure it uses the full available width */
-  margin: 80px auto 20px auto; /* Center container and adjust margins */
+  max-width: 100%;
+  width: 100%;
+  margin: 80px auto 20px auto;
   padding: 0 20px;
-  box-sizing: border-box; /* Ensures padding and borders are included in width/height */
+  box-sizing: border-box;
 }
 
 .login-container {
-  margin: 60px auto 20px auto; /* Center container and adjust margins */
+  margin: 60px auto 20px auto;
   padding: 0 20px;
   display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  flex-direction: column; /* Stack header and card vertically */
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   box-sizing: border-box;
 }
 
@@ -65,7 +73,7 @@ h1, h2 {
   color: var(--secondary-color);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 1000;
-  padding: 10px 0 10px 0;
+  padding: 10px 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -75,7 +83,7 @@ h1, h2 {
 .navbar h1 {
   font-size: 1.5em;
   font-weight: 500;
-  margin: 0; /* Ensure no margin affects centering */
+  margin: 0;
 }
 
 .nav-list {
@@ -98,19 +106,18 @@ h1, h2 {
   color: var(--accent-color);
 }
 
-
 .divider {
   width: 100%;
   height: 0.1em;
   background-color: var(--primary-color);
-  margin: 10px 0 10px 0;
+  margin: 10px 0;
 }
 
 .dashboard-metrics {
   padding-bottom: 15px;
   display: flex;
-  justify-content: space-between; /* Distribute space between items */
-  align-items: flex-start; /* Align items at the top */
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 .metric {
@@ -146,8 +153,10 @@ p {
   max-height: 35vh;
 }
 
-.custom-button,
-.custom-button-red {
+.reset-button,
+.submit-button,
+.box-button,
+.custom-button {
   font-size: 14px;
   padding: 10px 20px;
   margin: 0 20px 20px 0;
@@ -163,44 +172,74 @@ p {
   color: var(--secondary-color);
 }
 
-.custom-button-red {
+.reset-button {
   background-color: var(--danger-color);
   color: var(--secondary-color);
 }
 
-.custom-button:not(:disabled):hover,
-.custom-button-red:not(:disabled):hover {
-  background-color: var(--contrast-color);
+.submit-button {
+  font-size: 16px;
+  background-color: var(--submit-color);
   color: var(--secondary-color);
 }
 
-.custom-button:disabled,
-.custom-button-red:disabled {
-  background-color: #ccc; /* Disabled background color */
-  color: #999; /* Disabled text color */
-  cursor: not-allowed; /* Change cursor to indicate disabled state */
-  opacity: 0.6; /* Reduce opacity for disabled state */
+.box-button {
+  background-color: var(--box-color);
+  color: var(--secondary-color);
+}
+
+.custom-button:not(:disabled):hover {
+  background-color: var(--contrast-color);
+  color: var(--secondary-color);
+  filter: brightness(1.2);
+}
+
+.reset-button:not(:disabled):hover {
+  background-color: var(--danger-color);
+  color: var(--secondary-color);
+  filter: brightness(1.2);
+}
+
+.submit-button:not(:disabled):hover {
+  background-color: var(--submit-color);
+  color: var(--secondary-color);
+  filter: brightness(1.2);
+}
+
+.box-button:not(:disabled):hover {
+  background-color: var(--box-color);
+  color: var(--secondary-color);
+  filter: brightness(1.2);
 }
 
 
-.custom-button:not(:disabled):active,
-.custom-button-red:not(:disabled):active {
+.reset-button:disabled,
+.submit-button:disabled,
+.custom-button:disabled,
+.box-button:disabled {
+  background-color: #656565;
+  color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.submit-button:not(:disabled):active,
+.reset-button:not(:disabled):active,
+.box-button:not(:disabled):active,
+.custom-button:not(:disabled):active {
   background-color: var(--contrast-color);
   color: var(--secondary-color);
 }
 
 .custom-button:not(:disabled):focus,
-.custom-button-red:not(:disabled):focus {
+.custom-button:not(:disabled):focus {
   background-color: var(--contrast-color);
   color: var(--secondary-color);
 }
 
-
 .weight-estimate-container {
   text-align: center;
 }
-
-
 
 .loading-spinner {
   display: flex;
@@ -232,11 +271,6 @@ p {
   }
 }
 
-
-
-
-
-
 .custom-button mat-progress-bar {
   position: absolute;
   top: 0;
@@ -244,7 +278,6 @@ p {
   width: 100%;
   height: 4px;
 }
-
 
 .input-container {
   display: flex;
@@ -255,7 +288,7 @@ p {
 }
 
 .input-container input[type="text"] {
-  width: 100%; /* Full width of the container */
+  width: 100%;
   padding: 10px;
   font-size: 16px;
   border: 1px solid #ccc;
@@ -263,7 +296,7 @@ p {
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
   box-sizing: border-box;
-  text-align:center;
+  text-align: center;
   max-width: 400px;
   margin-left: auto;
   margin-right: auto;
@@ -274,14 +307,6 @@ p {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   outline: none;
 }
-
-
-
-
-
-
-
-
 
 .mat-button-toggle-group {
   display: flex;
@@ -296,8 +321,7 @@ p {
 }
 
 .mat-button-toggle:hover {
-  background-color: var(--contrast-color);
-  color: var(--secondary-color);
+  background-color: var(--accent-color);
 }
 
 .mat-button-toggle-checked {
@@ -305,10 +329,9 @@ p {
   color: var(--secondary-color) !important;
 }
 
-
 .estimate-container {
   display: flex;
-  gap: 10px; /* Space between the boxes */
+  gap: 10px;
 }
 
 .estimate-box {
@@ -316,36 +339,16 @@ p {
   padding: 10px;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  flex: 1; /* Make the boxes take equal space */
+  flex: 1;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .login-message {
   font-size: large;
-  color: #333333;
+  color: #3C6E71;
   text-align: center;
   padding-top: 20px;
 }
+
 .card-element {
   display: inline-block;
   width: 100%;
@@ -359,35 +362,41 @@ p {
   display: block;
   margin-bottom: 20px;
 }
+
 .login-input,
 .btn-block {
   width: 70%;
 }
+
 h2 {
   font-size: 2em;
-  color: #fff;
+  color: var(--secondary-color);
   text-align: center;
 }
+
 .inputbox {
   position: relative;
   margin: 30px 0;
   width: 310px;
-  border-bottom: 2px solid #fff;
+  border-bottom: 2px solid var(--secondary-color);
 }
-.inputbox label{
+
+.inputbox label {
   position: absolute;
   top: 50%;
   left: 5px;
   transform: translateY(-50%);
-  color: #fff;
+  color: var(--secondary-color);
   font-size: 1em;
   pointer-events: none;
-  transition: .5s;
+  transition: 0.5s;
 }
+
 input:focus ~ label,
-input:valid ~ label{
+input:valid ~ label {
   top: -5px;
 }
+
 .inputbox input {
   width: 100%;
   height: 50px;
@@ -395,52 +404,52 @@ input:valid ~ label{
   border: none;
   outline: none;
   font-size: 1em;
-  padding:0 35px 0 5px;
-  color: #fff;
+  padding: 0 35px 0 5px;
+  color: var(--secondary-color);
 }
-.inputbox ion-icon{
+
+.inputbox ion-icon {
   position: absolute;
   right: 8px;
-  color: #fff;
+  color: var(--secondary-color);
   font-size: 1.2em;
   top: 20px;
 }
-.forget{
-  margin: -15px 0 15px ;
-  font-size: .9em;
-  color: #fff;
+
+.forget {
+  margin: -15px 0 15px;
+  font-size: 0.9em;
+  color: var(--secondary-color);
   display: flex;
   justify-content: space-between;
 }
 
 .forget label input {
   margin-right: 3px;
-
 }
+
 .forget label a {
-  color: #fff;
+  color: var(--secondary-color);
   text-decoration: none;
 }
+
 .forget label a:hover {
   text-decoration: underline;
 }
 
 .register {
-  font-size: .9em;
-  color: #fff;
+  font-size: 0.9em;
+  color: var(--secondary-color);
   text-align: center;
   margin: 25px 0 10px;
 }
+
 .register p a {
   text-decoration: none;
-  color: #fff;
+  color: var(--secondary-color);
   font-weight: 600;
 }
+
 .register p a:hover {
   text-decoration: underline;
 }
-
-
-
-
-

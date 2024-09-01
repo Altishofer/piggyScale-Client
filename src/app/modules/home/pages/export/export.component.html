@@ -5,7 +5,7 @@
 
   <div *ngIf="feedbackMessage" class="weight-estimate-container">
     <p>{{feedbackMessage}}</p>
-    <button class="custom-button-red" (click)="resetFeedback()">OK</button>
+    <button class="custom-button" (click)="resetFeedback()">OK</button>
   </div>
 
   <div *ngIf="!feedbackMessage" class="weight-estimate-container">
@@ -13,4 +13,3 @@
   </div>
 
 </div>
-

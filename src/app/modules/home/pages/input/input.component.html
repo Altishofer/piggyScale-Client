@@ -5,7 +5,7 @@
 
   <div *ngIf="feedbackMessage && showDeleteLast" class="weight-estimate-container">
     <p>Estimate Stored</p>
-    <button class="custom-button-red" [hidden]="!showDeleteLast" (click)="handleRevertClick()" style="margin: 10px">Revert</button>
+    <button class="custom-button" [hidden]="!showDeleteLast" (click)="handleRevertClick()" style="margin: 10px">Revert</button>
     <button class="custom-button" (click)="resetFeedback()" style="margin: 10px">OK</button>
   </div>
 
@@ -24,9 +24,9 @@
       <input type="text" [(ngModel)]="realTimeEstimate" (ngModelChange)="onInputChange($event)" placeholder="Insert Weight (kg)">
     </div>
 
-    <button class="custom-button" (click)="handleResetClick()">Reset</button>
-    <button class="custom-button" [disabled]="!validInput" (click)="handleSubmitClick()">Submit</button>
-    <button class="custom-button" (click)="changeBox()">Box {{currentBox}}</button>
+    <button class="reset-button" (click)="handleResetClick()">Reset</button>
+    <button class="submit-button" [disabled]="!validInput" (click)="handleSubmitClick()">Submit</button>
+    <button class="box-button" (click)="changeBox()">Box {{currentBox}}</button>
 
   </div>
 

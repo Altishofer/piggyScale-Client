@@ -29,7 +29,7 @@
   <div *ngIf="feedbackMessage && showDeleteLast && !errorMessage" class="weight-estimate-container">
     <h5>Estimate Stored</h5>
     <p>{{ feedbackMessage }}</p>
-    <button class="custom-button-red" [hidden]="!showDeleteLast" (click)="handleRevertClick()" style="margin: 10px">Revert</button>
+    <button class="custom-button" [hidden]="!showDeleteLast" (click)="handleRevertClick()" style="margin: 10px">Revert</button>
     <button class="custom-button" (click)="resetFeedback()" style="margin: 10px">OK</button>
   </div>
 
@@ -57,10 +57,6 @@
         <h6>StdDev</h6>
         <p [ngStyle]="{'color': getStdDevColor(lowestStdDev?.toString())}">{{ lowestStdDev }}</p>
       </div>
-      <div class="metric" >
-        <h6>Box</h6>
-        <button class="custom-button" style="width: 15vw; height: 3vh; margin: 0; padding: 0;" (click)="changeBox()">{{currentBox}}</button>
-      </div>
     </div>
 
     <div class="dashboard-actions">
@@ -71,11 +67,12 @@
       </div>
 
       <ng-template #buttons>
-        <button class="custom-button" (click)="handleResetClick()">Reset</button>
-        <button class="custom-button" (click)="handleSubmitClick()">
+        <button class="reset-button" (click)="handleResetClick()">Reset</button>
+        <button class="submit-button" (click)="handleSubmitClick()">
           <mat-progress-bar mode="buffer" ></mat-progress-bar>
           Submit
         </button>
+        <button class="box-button" (click)="changeBox()">Box {{currentBox}}</button>
       </ng-template>
 
     </div>

@@ -4,7 +4,7 @@ import { CookieService } from "ngx-cookie-service";
 import { environment } from "@environments/environment";
 
 import { User } from '@data/models/user.interface'
-import {catchError, Observable} from "rxjs";
+import {catchError, Observable, tap} from "rxjs";
 
 
 @Injectable({
@@ -79,46 +79,58 @@ export class RestService {
       { headers: headers }
     );
   }
+  login(user: User): Observable<any> {
+    const headers: HttpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    const body: string = JSON.stringify(user);
+    return this.http.post(`${this.userUrl}/login`, body, { observe: 'response', headers })
+      .pipe(
+        tap((response: any) => {
+          if ((response.status >= 200 && response.status < 300) || response.status == 304) {
+            this.setTokenAndLocalStorage(response.body.token.result, user.userName, response.body.id);
+          }
+        })
+      );
+  }
 
   register(user: User): Observable<any> {
-    const headers : HttpHeaders = new HttpHeaders ({
+    const headers: HttpHeaders = new HttpHeaders({
       'Content-Type': 'application/json',
     });
-    const body : string = JSON.stringify(user);
-    return this.http.post(`${this.userUrl}/register`, body, { observe:'response', headers });
+    const body: string = JSON.stringify(user);
+    return this.http.post(`${this.userUrl}/register`, body, { observe: 'response', headers })
+      .pipe(
+        tap((response: any) => {
+          if ((response.status >= 200 && response.status < 300) || response.status == 304) {
+            this.setTokenAndLocalStorage(response.body.token.result, user.userName, response.body.id);
+          }
+        })
+      );
   }
-
-  login(user: User): Observable<any> {
-    const headers : HttpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
-    const body : string = JSON.stringify(user);
-    return this.http.post(`${this.userUrl}/login`, body, { observe:'response', headers });
-  }
-
   refreshTokenPeriodically() {
     setInterval(() => {
-      const headers : HttpHeaders = new HttpHeaders({
+      const headers: HttpHeaders = new HttpHeaders({
         'Content-Type': 'application/json',
-        'Bearer-Token':  this.cookieService.get("userToken"),
-        'Authorization': `bearer ${this.cookieService.get("userToken")}`
+        'Bearer-Token': this.cookieService.get('userToken'),
+        'Authorization': `bearer ${this.cookieService.get('userToken')}`
       });
-      return this.http.get(`${this.userUrl}/refresh-token`, { observe:'response', headers })
+      return this.http.get(`${this.userUrl}/refresh-token`, { observe: 'response', headers })
         .pipe(
           catchError((error: HttpErrorResponse) => {
             console.log(JSON.stringify(error.error));
-            return[];
+            return [];
           })
         )
         .subscribe((response: any) => {
           if ((response.status >= 200 && response.status < 300) || response.status == 304) {
-            this.cookieService.set('userToken', response.body.result, 1);
+            this.setTokenAndLocalStorage(response.body.result, localStorage.getItem('userName')!, localStorage.getItem('userId')!);
             console.log("SUCCESS: refreshing token");
           } else {
             console.log("ERROR: refreshing token was not successful");
           }
         });
-    }, 10 * 1000);//15 * 60 * 1000); // Refresh every 15 minutes
+    }, 15 * 60 * 1000); // Refresh every 10 seconds
   }
 
   isUserTokenValid(): boolean {
@@ -130,7 +142,22 @@ export class RestService {
     const tokenExpiration = new Date(this.cookieService.get('userTokenExpiration'));
     const currentTime = new Date();
 
+    // console.log("tokenExpiration", tokenExpiration);
+    // console.log("currentTime", currentTime);
+    // console.log("stillValid", currentTime < tokenExpiration);
+    // console.log("userName", localStorage.getItem("userName"));
+    // console.log("userId", localStorage.getItem("userId"));
+
     return currentTime < tokenExpiration && !!localStorage.getItem('userName') && !!localStorage.getItem('userId');
+  }
+
+  setTokenAndLocalStorage(token: string, userName: string, userId: string): void {
+    const expirationDate = new Date();
+    expirationDate.setHours(expirationDate.getHours() + 23);
+    this.cookieService.set('userToken', token, expirationDate);
+    this.cookieService.set('userTokenExpiration', expirationDate.toString(), expirationDate);
+    localStorage.setItem('userName', userName);
+    localStorage.setItem('userId', userId);
   }
 
 }

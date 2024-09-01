@@ -58,9 +58,6 @@ export class ScaleComponent {
     private restService: RestService,
     private route: ActivatedRoute
   ) {
-
-
-
     this.mqttService.client.on('message', (topic: any, message: { toString: () => string; }) => {
       this.addDataToChart(new Date(), parseFloat(String(message)));
     });
