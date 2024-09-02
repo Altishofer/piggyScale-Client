@@ -170,7 +170,33 @@ Add script to autostart (optional)
  sudo crontab -e
  ```
  ```console
- @reboot sleep 60 && source <absolutePathToRepository>/.venv/bin/activate && python <absolutePathToScript>/server/server.py
- @reboot sleep 60 && source <absolutePathToRepository>/.venv/bin/activate && python <absolutePathToScript>/scale/measurements.py
- @reboot sleep 60 && ng serve <absolutePathToScript>
+@reboot sleep 60 &&  bash /home/pi/Desktop/startAll.sh
  ```
+ ```console
+Create new bash file on Desktop
+cd /home/pi/Desktop
+touch ./startAll.sh
+sudo chmod +x startAll.sh
+ ```
+```console
+#!/bin/bash
+
+# Activate logger
+#exec > /home/pi/Desktop/startAll.log 2>&1
+
+source /home/pi/.nvm/nvm.sh
+
+# Start Angular project
+cd /home/pi/Desktop/piggyScale
+/usr/local/bin/ng serve --configuration production &
+
+# Start .NET project
+cd /home/pi/Desktop/piggyScale-Server/Project
+/home/pi/.dotnet/dotnet run --launch-profile Production &
+
+# Start Python script
+/home/pi/Desktop/piggyScale/.venv/bin/python /home/pi/Desktop/piggyScale/scale/measure.py &
+
+```
+
+
