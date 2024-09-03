@@ -162,20 +162,22 @@ This repository contains all three components of the Piggy Scale system. The Sca
   mosquitto _pub -h localhost -t /test/topic -m "Hello World!"
   ```
 
-### Autostart
-Add script to autostart (optional)
+### Autostart for Raspbberry Pi
+Add all script to autostart (optional)
+
+1. Open Crontab with root rights:
  ```console
  sudo crontab -e
  ```
+2. Add automatic reset on reboot
  ```console
-@reboot sleep 60 &&  bash /home/pi/Desktop/startAll.sh
+@reboot sleep 60 && bash /home/pi/Desktop/startAll.sh
  ```
+3. Create new bash script on Desktop
  ```console
-Create new bash file on Desktop
-cd /home/pi/Desktop
-touch ./startAll.sh
-sudo chmod +x startAll.sh
+cd /home/pi/Desktop && nano startAll.sh
  ```
+4. Insert Deployment code into bash file
 ```console
 #!/bin/bash
 
@@ -186,15 +188,24 @@ source /home/pi/.nvm/nvm.sh
 
 # Start Angular project
 cd /home/pi/Desktop/piggyScale
+/usr/bin/git pull
 /usr/local/bin/ng serve --configuration production &
 
 # Start .NET project
 cd /home/pi/Desktop/piggyScale-Server/Project
+/usr/bin/git pull
 /home/pi/.dotnet/dotnet run --launch-profile Production &
 
 # Start Python script
 /home/pi/Desktop/piggyScale/.venv/bin/python /home/pi/Desktop/piggyScale/scale/measure.py &
-
 ```
-
+5. Make file executable
+```console
+sudo chmod +x startAll.sh
+```
+6. Reboot
+```console
+sudo reboot
+```
+7. If automatic deployment fails, uncomment logger in bash script and open log file after reboot.
 
