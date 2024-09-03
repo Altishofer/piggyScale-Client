@@ -1,9 +1,4 @@
 ![paho-mqtt](https://img.shields.io/badge/paho--mqtt-2.1.0-brightgreen)
-![requests](https://img.shields.io/badge/requests-2.32.3-orange)
-![flask](https://img.shields.io/badge/flask-3.0.3-red)
-![db-sqlite3](https://img.shields.io/badge/db--sqlite3-0.0.1-yellow)
-![pandas](https://img.shields.io/badge/pandas-2.2.2-blue)
-![flask_cors](https://img.shields.io/badge/flask__cors-4.0.1-purple)
 
 # Piggy Scale: 
 🎉 Real-Time Scale and Weight Analytics 🎉
@@ -29,11 +24,8 @@ This repository contains all three components of the Piggy Scale system. The Sca
 
 - **[Mosquitto](https://mosquitto.org/):** An open-source message broker that implements the MQTT protocol.
 - **[Paho](https://www.eclipse.org/paho/):** A python library for interacting with the mosquitto MQTT broker.
-- **[Python](https://www.python.org/):** The current prototype of the serverside is written in the general purpose language.
-- **[Flask](https://flask.palletsprojects.com/):** A lightweight web application framework for Python.
 - **[Angular](https://angular.io/):** A platform for building web applications using TypeScript.
 - **[TypeScript](https://www.typescriptlang.org/):** The Client is written in TypeScript, a more statically typed version of JavaScrippt.
-- **[SQLite3](https://sqlite.org/index.html):** A python library for manipulating lightweight open source database files.
 
 ## Main Components
 
@@ -58,7 +50,37 @@ This repository contains all three components of the Piggy Scale system. The Sca
 
 ## Deployment
 
-### Deployment - REST-Server & Scale
+### Deployment - Client
+
+#### Software Prerequisites
+- [Node.js](https://www.yarn.com)
+- [NPM](https://www.yarn.com)
+- [Yarn](https://www.yarn.com)
+
+#### Setup
+
+1. Clone this repository to your local machine:
+  ```shell
+  git clone https://github.com/Altishofer/piggyScale.git
+  ```
+2. Enter newly cloned directory
+  ```shell
+  cd piggyScale 
+  ```
+3. Install dependencies
+ ```console
+ yarn install
+ ```
+4. Deploy Client
+ ```console
+ ng serve
+ ```
+5. Open UI in your favorite browser
+
+[http://localhost:4200/login](http://localhost:4200/login)
+
+
+### Deployment - Scale Simulator
 
 #### Software Prerequisites
 - [Python3.11.9](https://www.python.org/downloads/release/python-3119/)
@@ -87,33 +109,7 @@ This repository contains all three components of the Piggy Scale system. The Sca
  ```
 4. Deploy REST-Server
  ```console
- python ./server/server.py
- ```
-
-### Deployment - Client
-
-#### Software Prerequisites
-- [Node.js](https://www.yarn.com)
-- [NPM](https://www.yarn.com)
-- [Yarn](https://www.yarn.com)
-
-#### Setup
-
-1. Clone this repository to your local machine:
-  ```shell
-  git clone https://github.com/Altishofer/piggyScale.git
-  ```
-2. Enter newly cloned directory
-  ```shell
-  cd piggyScale 
-  ```
-3. Install dependencies
- ```console
- yarn install
- ```
-4. Deploy Client
- ```console
- ng serve
+ python ./scale/measure.py
  ```
 
 ### MQTT - Server Setup (Linux)
