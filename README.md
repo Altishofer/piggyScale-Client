@@ -1,4 +1,7 @@
 ![paho-mqtt](https://img.shields.io/badge/paho--mqtt-2.1.0-brightgreen)
+![Mosquitto](https://img.shields.io/badge/mosquitto-2.0.15-brightgreen)
+![Angular](https://img.shields.io/badge/angular-15.2.0-red)
+![TypeScript](https://img.shields.io/badge/typescript-4.9.5-blue)
 
 # Piggy Scale: 
 🎉 Real-Time Scale and Weight Analytics 🎉
@@ -29,11 +32,9 @@ This repository contains all three components of the Piggy Scale system. The Sca
 
 ## Main Components
 
-- **[REST Server](https://github.com/Altishofer/piggyScale/tree/main/server):** Manages a RESTful API for interacting with the database, which stores permanent records.
 - **[Scale](https://github.com/Altishofer/piggyScale/tree/main/scale):** Captures data from the hardware and publishes real-time measurements to the MQTT server.
 - **[Client](https://github.com/Altishofer/piggyScale/tree/main/src):** An Angular-based web platform that subscribes to real-time updates from the scale and retrieves data from the server's database.
 - **[MQTT Server](https://github.com/Altishofer/piggyScale/tree/main/server):** Buffers real-time measurements from the Scale and forwards them to subscribed clients.
-
 
 
 ## Hardware
@@ -77,7 +78,7 @@ This repository contains all three components of the Piggy Scale system. The Sca
  ```
 5. Open UI in your favorite browser
 
-[http://localhost:4200/login](http://localhost:4200/login)
+    http://localhost:4200/login
 
 
 ### Deployment - Scale Simulator
@@ -160,6 +161,7 @@ This repository contains all three components of the Piggy Scale system. The Sca
   # Switch to subscription shell and check if output is visible
   mosquitto _pub -h localhost -t /test/topic -m "Hello World!"
   ```
+
 ### Autostart
 Add script to autostart (optional)
  ```console
