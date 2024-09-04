@@ -54,9 +54,9 @@ This repository contains all three components of the Piggy Scale system. The Sca
 ### Deployment - Client
 
 #### Software Prerequisites
-- [Node.js](https://www.yarn.com)
-- [NPM](https://www.yarn.com)
-- [Yarn](https://www.yarn.com)
+- [Node.js](https://nodejs.org/en/download/package-manager)
+- [NPM](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+- [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/)
 
 #### Setup
 
