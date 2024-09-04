@@ -3,7 +3,7 @@
 ![Angular](https://img.shields.io/badge/angular-15.2.0-red)
 ![TypeScript](https://img.shields.io/badge/typescript-4.9.5-blue)
 
-# Piggy Scale: 
+# Piggy Scale Client: 
 🎉 Real-Time Scale and Weight Analytics 🎉
 
 This repository contains all three components of the Piggy Scale system. The Scale component reads data from the load cells and publishes the measurements to the MQTT server. The MQTT server stores these real-time measurements and makes them available to all subscribed web clients. The web client subscribes to these real-time signals and loads previous weights from the database, allowing users to view, visualize, and analyze both current and historical measurements. The server handles requests from the client to read, write, and manipulate stored records.
@@ -32,9 +32,9 @@ This repository contains all three components of the Piggy Scale system. The Sca
 
 ## Main Components
 
-- **[Scale](https://github.com/Altishofer/piggyScale/tree/main/scale):** Captures data from the hardware and publishes real-time measurements to the MQTT server.
-- **[Client](https://github.com/Altishofer/piggyScale/tree/main/src):** An Angular-based web platform that subscribes to real-time updates from the scale and retrieves data from the server's database.
-- **[MQTT Server](https://github.com/Altishofer/piggyScale/tree/main/server):** Buffers real-time measurements from the Scale and forwards them to subscribed clients.
+- **[Scale](https://github.com/Altishofer/piggyScale-Client/tree/main/scale):** Captures data from the hardware and publishes real-time measurements to the MQTT server.
+- **[Client](https://github.com/Altishofer/piggyScale-Client/tree/main/src):** An Angular-based web platform that subscribes to real-time updates from the scale and retrieves data from the server's database.
+- **[MQTT Server](https://github.com/Altishofer/piggyScale-Client/tree/main/server):** Buffers real-time measurements from the Scale and forwards them to subscribed clients.
 
 
 ## Hardware
@@ -62,11 +62,11 @@ This repository contains all three components of the Piggy Scale system. The Sca
 
 1. Clone this repository to your local machine:
   ```shell
-  git clone https://github.com/Altishofer/piggyScale.git
+  git clone https://github.com/Altishofer/piggyScale-Client.git
   ```
 2. Enter newly cloned directory
   ```shell
-  cd piggyScale 
+  cd piggyScale-Client 
   ```
 3. Install dependencies
  ```console
@@ -90,11 +90,11 @@ This repository contains all three components of the Piggy Scale system. The Sca
 
 1. Clone this repository to your local machine:
   ```shell
-  git clone https://github.com/Altishofer/piggyScale.git
+  git clone https://github.com/Altishofer/piggyScale-Client.git
   ```
 2. Enter newly cloned directory
   ```shell
-  cd piggyScale 
+  cd piggyScale-Client 
   ```
 3. Create Virtual Environment
  ```console
@@ -187,17 +187,17 @@ cd /home/pi/Desktop && nano startAll.sh
 source /home/pi/.nvm/nvm.sh
 
 # Start Angular project
-cd /home/pi/Desktop/piggyScale
+cd /home/pi/Desktop/piggyScale-Client
 /usr/bin/git pull
 /usr/local/bin/ng serve --configuration production &
 
 # Start .NET project
-cd /home/pi/Desktop/piggyScale-Server/Project
+cd /home/pi/Desktop/piggyScale-Client-Server/Project
 /usr/bin/git pull
 /home/pi/.dotnet/dotnet run --launch-profile Production &
 
 # Start Python script
-/home/pi/Desktop/piggyScale/.venv/bin/python /home/pi/Desktop/piggyScale/scale/measure.py &
+/home/pi/Desktop/piggyScale-Client/.venv/bin/python /home/pi/Desktop/piggyScale-Client/scale/measure.py &
 ```
 5. Make file executable
 ```console
